@@ -24,3 +24,8 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.AWS_CICD_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
+
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
