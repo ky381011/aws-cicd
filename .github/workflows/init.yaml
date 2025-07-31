@@ -7,10 +7,14 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  AWS_REGION: ap-northeast-1
+
 
 jobs:
-  hello:
+  delivery:
+    name: aws-cd
     runs-on: ubuntu-latest
     steps:
-      - name: hello
-        run: "echo Hello"
+      - name: Checkout
+        uses: actions/checkout@v4
