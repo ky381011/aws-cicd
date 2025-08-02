@@ -29,25 +29,6 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_CICD_ROLE }}'
 
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.AWS_CICD_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-      - name: Generate inventory
-        run: |
-          mkdir -p ansible
-          cat <<EOF > ansible/inventory.ini
-          [web]
-          ${{ secrets.EC2_CICD_HOST }} ansible_user=${{ secrets.EC2_CICD_USER }} ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_python_interpreter=/usr/bin/python3
-          EOF
-
-      # - name: Install Ansible
-      #   run: |
-      #     sudo apt update
-      #     sudo apt install -y ansible
-
       - name: Fetch memory usage from EC2
         id: memory
         run: |
