@@ -17,3 +17,9 @@ Need "SSM Agent" -> Default installed in Amazon Linux
 Accept HTTPS(443)
 ##### Outbound
 Accept all
+
+#### IAM
+- For session manager
+    - Policy : AmazonSSMManagedInstanceCore
+- For github actions
+    - (Optional)
