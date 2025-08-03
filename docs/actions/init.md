@@ -8,6 +8,9 @@
 - IAM
 - VPC
 - System Manager
+
+#### EC2
+Need "SSM Agent" -> Default installed in Amazon Linux
   
 #### VPC
 ##### Inbound
