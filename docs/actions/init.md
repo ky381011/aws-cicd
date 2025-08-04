@@ -38,3 +38,22 @@ Accept all
         }
         ```
         ```"ssm:SendCommand"``` is used for get memory usage of EC2 instance
+
+## Optional setting
+### AWS credential in GitHub Actions
+```yaml
+- name: Configure AWS credentials
+    uses: aws-actions/configure-aws-credentials@v4
+    with:
+        aws-region: ${{ env.AWS_REGION }}
+        role-to-assume: 'arn:aws:iam::YOUR_AWS_ID:role/IAM_ROLE_NAME'
+```
+Use OIDC (OpenID Connect) to get AWS credential  
+  
+IAM -> Access Management -> Identity providers -> Add provider
+- Provider type : OpenId Connect
+- Provider URL : https://token.actions.githubusercontent.com
+- Audience : sts.amazonaws.com
+
+Then, assign role which created for github actions  
+Recommend to use github actions secret for your ID and role name
