@@ -18,7 +18,23 @@ Accept HTTPS(443)
 Accept all
 
 #### IAM
-- For session manager
-    - Policy : AmazonSSMManagedInstanceCore
 - For github actions
-    - (Optional)
+    - Custom policy
+        ```json
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "ssm:SendCommand",
+                        "ssm:GetCommandInvocation",
+                        "ssm:ListCommandInvocations",
+                        "ssm:DescribeInstanceInformation"
+                    ],
+                    "Resource": "*"
+                }
+            ]
+        }
+        ```
+        ```"ssm:SendCommand"``` is used for get memory usage of EC2 instance
