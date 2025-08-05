@@ -55,5 +55,28 @@ IAM -> Access Management -> Identity providers -> Add provider
 - Provider URL : https://token.actions.githubusercontent.com
 - Audience : sts.amazonaws.com
 
-Then, assign role which created for github actions  
+Then, assign policy to role which created for github actions  
+And setting trust policy as example json below
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "",
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::YOUR_AWS_ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {
+                    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+                    "token.actions.githubusercontent.com:sub": "repo:YOUR_GITHUB_USER_NAME/YOUR_GITHUB_REPOSITORY_NAME:ref:refs/heads/BRANCH_NAME"
+                }
+            }
+        }
+    ]
+}
+```
+
 Recommend to use github actions secret for your ID and role name
