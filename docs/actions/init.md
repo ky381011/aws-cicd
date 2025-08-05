@@ -79,4 +79,6 @@ And setting trust policy as example json below
 }
 ```
 
+Without trust policy, github actions can't use credentials
+
 Recommend to use github actions secret for your ID and role name
