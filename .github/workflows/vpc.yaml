@@ -1,8 +1,8 @@
 name: vpc
 
 on:
-  push:
-    branches: [main]
+  # push:
+  #   branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -16,6 +16,7 @@ permissions:
 
 jobs:
   check:
+    if: github.event_name != 'workflow_dispatch'
     name: check credentials
     runs-on: ubuntu-latest
     steps:
