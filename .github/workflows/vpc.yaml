@@ -46,5 +46,14 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Init terraform
+      - name: Terraform Init
+        working-directory: src/vpc
         run: terraform init
+
+      - name: Terraform Plan
+        working-directory: src/vpc
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: src/vpc
+        run: terraform apply -auto-approve tfplan
