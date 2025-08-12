@@ -9,6 +9,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-1
+  JOB_NAME: state
 
 permissions:
   id-token: write
@@ -57,3 +58,24 @@ jobs:
       - name: Terraform Apply
         working-directory: src/state
         run: terraform apply -auto-approve tfplan
+
+      - name: Checkout private tfstate repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/${{ secrets.STATE_REPO_NAME }}
+          token: ${{ secrets.STATE_REPO_TOKEN }}
+          path: state-repo
+
+      - name: Copy tfstate
+        run: |
+          mkdir -p state-repo/${{ env.STATE_PATH }}
+          cp terraform.tfstate state-repo/${{ env.STATE_PATH }}
+      
+      - name: Commit and push state
+        run: |
+          cd state-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ${{ env.JOB_NAME }}/terraform.tfstate
+          git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
+          git push origin main
