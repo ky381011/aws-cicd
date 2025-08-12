@@ -9,7 +9,7 @@ on:
 
 env:
   AWS_REGION: ap-northeast-1
-  JOB_NAME: state
+  JOB_NAME: state # Same as job name
 
 permissions:
   id-token: write
