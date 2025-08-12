@@ -69,7 +69,7 @@ jobs:
       - name: Copy tfstate
         run: |
           mkdir -p state-repo/${{ env.STATE_PATH }}
-          cp cp src/state/terraform.tfstate state-repo/${{ env.STATE_PATH }}
+          cp src/state/terraform.tfstate state-repo/${{ env.STATE_PATH }}
       
       - name: Commit and push state
         run: |
