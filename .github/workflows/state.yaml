@@ -68,14 +68,14 @@ jobs:
 
       - name: Copy tfstate
         run: |
-          mkdir -p state-repo/${{ env.STATE_PATH }}
-          cp src/state/terraform.tfstate state-repo/${{ env.STATE_PATH }}/terraform.tfstate
+          mkdir -p state-repo/${{ env.JOB_NAME }}
+          cp src/state/terraform.tfstate state-repo/${{ env.JOB_NAME }}/terraform.tfstate
       
       - name: Commit and push state
         run: |
           cd state-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "${{ env.STATE_PATH }}/terraform.tfstate"
+          git add "${{ env.JOB_NAME }}/terraform.tfstate"
           git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
           git push origin main
