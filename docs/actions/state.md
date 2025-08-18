@@ -5,6 +5,9 @@
 > [!CAUTION]
 > You must delete VPC created by GitHub Actions manually.
 
+Comparede to vpc.yaml, adding process of storing tfstate file  
+File is stored in own private repository   
+
 ```yaml
 - name: Checkout private tfstate repo
   uses: actions/checkout@v4
