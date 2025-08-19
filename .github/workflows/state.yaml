@@ -67,6 +67,10 @@ jobs:
           token: ${{ secrets.STATE_REPO_TOKEN }}
           path: state-repo
 
+      - name: Mask repo name
+        run: |
+          echo "::add-mask::${{ env.STORE_PATH }}"
+
       - name: Copy tfstate
         run: |
           mkdir -p state-repo/${{ env.JOB_NAME }}
