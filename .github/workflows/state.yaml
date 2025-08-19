@@ -10,6 +10,7 @@ on:
 env:
   AWS_REGION: ap-northeast-1
   JOB_NAME: state # Same as job name
+  STORE_PATH: state/${{ github.event.repository.name }}/${{ env.JOB_NAME }}
 
 permissions:
   id-token: write
@@ -69,13 +70,13 @@ jobs:
       - name: Copy tfstate
         run: |
           mkdir -p state-repo/${{ env.JOB_NAME }}
-          cp src/state/terraform.tfstate state-repo/${{ env.JOB_NAME }}/terraform.tfstate
+          cp src/state/terraform.tfstate state-repo/${{ env.STORE_PATH }}/terraform.tfstate
       
       - name: Commit and push state
         run: |
           cd state-repo
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "${{ env.JOB_NAME }}/terraform.tfstate"
+          git add "${{ env.STORE_PATH }}/terraform.tfstate"
           git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
           git push origin main
