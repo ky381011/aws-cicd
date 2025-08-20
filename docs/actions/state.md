@@ -34,3 +34,5 @@ File is stored in own private repository
     git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
     git push origin main
 ```
+
+Private repository name is masked in logs
