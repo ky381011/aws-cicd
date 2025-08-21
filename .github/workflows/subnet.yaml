@@ -1,0 +1,86 @@
+name: subnet
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  AWS_REGION: ap-northeast-1
+  JOB_NAME: subnet # Same as job name
+  STORE_PATH: subnet/${{ github.event.repository.name }}/subnet
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  check:
+    if: github.event_name != 'workflow_dispatch'
+    name: check credentials
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
+  
+  create:
+    if: github.event_name == 'workflow_dispatch'
+    name: create vpc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: src/state
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: src/state
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: src/state
+        run: terraform apply -auto-approve tfplan
+
+      - name: Checkout private tfstate repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/${{ secrets.STATE_REPO_NAME }}
+          token: ${{ secrets.STATE_REPO_TOKEN }}
+          path: state-repo
+
+      - name: Mask repo name
+        run: |
+          echo "::add-mask::${{ env.STORE_PATH }}"
+
+      - name: Copy tfstate
+        run: |
+          mkdir -p state-repo/${{ env.STORE_PATH }}
+          cp src/state/terraform.tfstate state-repo/${{ env.STORE_PATH }}/terraform.tfstate
+      
+      - name: Commit and push state
+        run: |
+          cd state-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${{ env.STORE_PATH }}/terraform.tfstate"
+          git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
+          git push origin main
