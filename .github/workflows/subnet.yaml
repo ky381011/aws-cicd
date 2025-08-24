@@ -49,15 +49,15 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: src/state
+        working-directory: src/${{ env.JOB_NAME}}
         run: terraform init
 
       - name: Terraform Plan
-        working-directory: src/state
+        working-directory: src/${{ env.JOB_NAME}}
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        working-directory: src/state
+        working-directory: src/${{ env.JOB_NAME}}
         run: terraform apply -auto-approve tfplan
 
       # - name: Checkout private tfstate repo
