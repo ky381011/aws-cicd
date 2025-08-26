@@ -5,3 +5,5 @@
 [Detail](./actions/vpc.md)  
 #### 3. Store state file
 [Detail](./actions/state.md)  
+#### 4. Create multi subnet
+[Detail](./actions/subnet.md)  
