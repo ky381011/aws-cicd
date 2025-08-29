@@ -11,6 +11,7 @@ env:
   AWS_REGION: ap-northeast-1
   JOB_NAME: lambda # Same as job name
   STORE_PATH: lambda/${{ github.event.repository.name }}/lambda
+  TERRAFORM_WORK_DIR: src/lambda/terraform
 
 permissions:
   id-token: write
@@ -49,15 +50,15 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        working-directory: src/${{ env.JOB_NAME}}
+        working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: terraform init
 
       - name: Terraform Plan
-        working-directory: src/${{ env.JOB_NAME}}
+        working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: terraform plan -out=tfplan
 
       - name: Terraform Apply
-        working-directory: src/${{ env.JOB_NAME}}
+        working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: terraform apply -auto-approve tfplan
 
       # - name: Checkout private tfstate repo
