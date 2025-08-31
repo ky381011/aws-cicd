@@ -31,7 +31,15 @@ jobs:
         with:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
-  
+
+  test:
+    if: github.event_name == 'workflow_dispatch'
+    name: test lambda
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
   create:
     if: github.event_name == 'workflow_dispatch'
     name: create vpc
