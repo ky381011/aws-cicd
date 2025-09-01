@@ -46,7 +46,7 @@ jobs:
       - name: Check diff in target directory
         id: diff
         run: |
-          if git diff --quiet HEAD^ HEAD -- ./target-dir; then
+          if git diff --quiet HEAD^ HEAD -- ${{ env.APP_WORK_DIR }}; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
