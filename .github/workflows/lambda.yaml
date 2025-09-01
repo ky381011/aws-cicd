@@ -12,6 +12,7 @@ env:
   JOB_NAME: lambda # Same as job name
   STORE_PATH: lambda/${{ github.event.repository.name }}/lambda
   TERRAFORM_WORK_DIR: src/lambda/terraform
+  APP_WORK_DIR: src/lambda/app
 
 permissions:
   id-token: write
@@ -32,8 +33,28 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
 
+  diff:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check diff in target directory
+        id: diff
+        run: |
+          if git diff --quiet HEAD^ HEAD -- ./target-dir; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
   test:
-    if: github.event_name == 'workflow_dispatch'
+    needs: check-diff
+    if: needs.check-diff.outputs.changed == 'true'
     name: test lambda
     runs-on: ubuntu-latest
     steps:
