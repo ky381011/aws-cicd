@@ -53,8 +53,8 @@ jobs:
           fi
 
   test:
-    needs: check-diff
-    if: needs.check-diff.outputs.changed == 'true'
+    needs: diff
+    if: needs.diff.outputs.changed == 'true'
     name: test lambda
     runs-on: ubuntu-latest
     steps:
