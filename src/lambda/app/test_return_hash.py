@@ -28,3 +28,19 @@ def test_lambda_invalid_event():
     assert result["statusCode"] == 400
     body = json.loads(result["body"])
     assert body["error"] == "No text provided"
+
+if __name__ == "__main__":
+    tests = [
+        test_lambda_with_text,
+        test_lambda_without_text,
+        test_lambda_invalid_event
+    ]
+
+    for test in tests:
+        try:
+            test()
+            print(f"{test.__name__}: ✅ Passed")
+        except AssertionError as e:
+            print(f"{test.__name__}: ❌ Failed - {e}")
+        except Exception as e:
+            print(f"{test.__name__}: ❌ Error - {e}")
