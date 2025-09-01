@@ -61,6 +61,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Test python
+        run: |
+            python ${{ env.APP_WORK_DIR }}/test_return_hash.py
+
+
   create:
     if: github.event_name == 'workflow_dispatch'
     name: create vpc
