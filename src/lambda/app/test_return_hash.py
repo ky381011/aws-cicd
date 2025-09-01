@@ -1,6 +1,6 @@
 import json
 import hashlib
-from hash import lambda_handler
+from return_hash import lambda_handler
 
 def test_lambda_with_text():
     text = "hello"
