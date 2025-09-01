@@ -10,6 +10,9 @@ def test_lambda_with_text():
     assert result["statusCode"] == 200
     body = json.loads(result["body"])
 
+    print(f"Body: {body}")
+    print(f"Computed SHA-256 Hash: {hash_value}")
+
     expected_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
     assert body["hash"] == expected_hash
 
@@ -19,6 +22,10 @@ def test_lambda_without_text():
 
     assert result["statusCode"] == 400
     body = json.loads(result["body"])
+
+    print(f"Body: {body}")
+    print(f"Hash: {body.get('hash')}")
+
     assert body["error"] == "No text provided"
 
 def test_lambda_invalid_event():
@@ -27,6 +34,10 @@ def test_lambda_invalid_event():
 
     assert result["statusCode"] == 400
     body = json.loads(result["body"])
+
+    print(f"Body: {body}")
+    print(f"Hash: {body.get('hash')}")
+    
     assert body["error"] == "No text provided"
 
 if __name__ == "__main__":
