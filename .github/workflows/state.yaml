@@ -12,6 +12,10 @@ env:
   JOB_NAME: state # Same as job name
   STORE_PATH: state/${{ github.event.repository.name }}/state
 
+  # Apply : 1
+  # Destoroy : 0
+  OPERATE: 1
+
 permissions:
   id-token: write
   contents: read
