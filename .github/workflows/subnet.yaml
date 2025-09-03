@@ -10,7 +10,7 @@ on:
 env:
   AWS_REGION: ap-northeast-1
   JOB_NAME: subnet # Same as job name
-  STORE_PATH: subnet/${{ github.event.repository.name }}/subnet
+  STORE_PATH: state/${{ github.event.repository.name }}/subnet
 
 permissions:
   id-token: write

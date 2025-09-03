@@ -10,7 +10,7 @@ on:
 env:
   AWS_REGION: ap-northeast-1
   JOB_NAME: lambda # Same as job name
-  STORE_PATH: lambda/${{ github.event.repository.name }}/lambda
+  STORE_PATH: state/${{ github.event.repository.name }}/lambda
   TERRAFORM_WORK_DIR: src/lambda/terraform
   APP_WORK_DIR: src/lambda/app
 
