@@ -52,6 +52,17 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Checkout private tfstate repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/${{ secrets.STATE_REPO_NAME }}
+          token: ${{ secrets.STATE_REPO_TOKEN }}
+          path: state-repo
+
+      - name: Mask repo name
+        run: |
+          echo "::add-mask::${{ env.STORE_PATH }}"
+
       - name: Terraform Init
         working-directory: src/state
         run: terraform init
@@ -71,14 +82,14 @@ jobs:
           token: ${{ secrets.STATE_REPO_TOKEN }}
           path: state-repo
 
-      - name: Mask repo name
-        run: |
-          echo "::add-mask::${{ env.STORE_PATH }}"
+      # - name: Mask repo name
+      #   run: |
+      #     echo "::add-mask::${{ env.STORE_PATH }}"
 
-      - name: Copy tfstate
-        run: |
-          mkdir -p state-repo/${{ env.STORE_PATH }}
-          cp src/state/terraform.tfstate state-repo/${{ env.STORE_PATH }}/terraform.tfstate
+      # - name: Copy tfstate
+      #   run: |
+      #     mkdir -p state-repo/${{ env.STORE_PATH }}
+      #     cp src/state/terraform.tfstate state-repo/${{ env.STORE_PATH }}/terraform.tfstate
       
       - name: Commit and push state
         run: |
