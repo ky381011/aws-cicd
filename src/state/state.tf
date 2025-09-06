@@ -3,5 +3,6 @@ resource "aws_vpc" "test_state"{
   enable_dns_hostnames = true
   tags = {
     Name = "tf_test"
+    deploy = "github_actions"
   }
 }
