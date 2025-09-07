@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   check:
-    if: github.event_name != 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && env.OPERATE == '1'
     name: check credentials
     runs-on: ubuntu-latest
     steps:
