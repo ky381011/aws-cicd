@@ -8,9 +8,13 @@ on:
   workflow_dispatch:
     inputs:
       OPERATE:
-        description: "1 = Apply, 0 = Destroy"
+        description: "Choose operation"
         required: true
-        default: "1"
+        default: "apply"
+        type: choice
+        options:
+          - apply
+          - destroy
 
 env:
   AWS_REGION: ap-northeast-1
@@ -42,7 +46,7 @@ jobs:
           role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
   
   create:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.OPERATE == '1'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.OPERATE == 'apply'
     name: create vpc
     runs-on: ubuntu-latest
     steps:
