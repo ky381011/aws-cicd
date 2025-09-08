@@ -45,7 +45,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
   
-  create:
+  apply:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.OPERATE == 'apply'
     name: create vpc
     runs-on: ubuntu-latest
