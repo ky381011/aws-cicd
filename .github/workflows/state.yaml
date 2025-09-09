@@ -160,6 +160,10 @@ jobs:
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: terraform init
 
+      - name: Terraform Plan
+        working-directory: ${{ env.TERRAFORM_WORK_DIR }}
+        run: terraform plan -destroy
+
       - name: Terraform Destroy
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: terraform destroy -auto-approve
