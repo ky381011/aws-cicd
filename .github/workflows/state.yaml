@@ -47,7 +47,7 @@ jobs:
   
   apply:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.OPERATE == 'apply'
-    name: create vpc
+    name: terraform apply
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -121,7 +121,7 @@ jobs:
 
   destroy:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.OPERATE == 'destroy'
-    name: create vpc
+    name: terraform destroy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
