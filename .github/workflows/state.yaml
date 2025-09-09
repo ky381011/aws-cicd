@@ -118,3 +118,62 @@ jobs:
           git add "${{ env.STORE_PATH }}/terraform.tfstate"
           git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
           git push origin main
+
+  destroy:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.OPERATE == 'destroy'
+    name: create vpc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Checkout private tfstate repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/${{ secrets.STATE_REPO_NAME }}
+          token: ${{ secrets.STATE_REPO_TOKEN }}
+          path: state-repo
+
+      - name: Copy tfstate if exists
+        run: |
+          if [ -f "state-repo/${{ env.STORE_PATH }}/terraform.tfstate" ]; then
+            \cp -f state-repo/${{ env.STORE_PATH }}/terraform.tfstate ${{ env.TERRAFORM_WORK_DIR }}/terraform.tfstate
+            echo "tfstate overwritten."
+          else
+            echo "No existing tfstate, skipping copy."
+          fi
+
+      - name: Mask repo name
+        run: |
+          echo "::add-mask::${{ env.STORE_PATH }}"
+
+      - name: Terraform Init
+        working-directory: ${{ env.TERRAFORM_WORK_DIR }}
+        run: terraform init
+
+      - name: Terraform Init
+        working-directory: ${{ env.TERRAFORM_WORK_DIR }}
+        run: terraform destroy -auto-approve
+
+      - name: Overwrite tfstate
+        run: |
+          mkdir -p state-repo/${{ env.STORE_PATH }}
+          \cp -f ${{ env.TERRAFORM_WORK_DIR }}/terraform.tfstate state-repo/${{ env.STORE_PATH }}/terraform.tfstate
+      
+      - name: Commit and push new state
+        run: |
+          cd state-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${{ env.STORE_PATH }}/terraform.tfstate"
+          git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
+          git push origin main
