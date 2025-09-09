@@ -84,7 +84,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
-        run: terraform init -reconfigure -force-copy
+        run: terraform init -reconfigure
 
       - name: Terraform Plan
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
@@ -158,7 +158,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
-        run: terraform init -reconfigure -force-copy
+        run: terraform init -reconfigure
 
       - name: Terraform Plan
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
