@@ -5,7 +5,7 @@
 > [!IMPORTANT]
 > You can destroy environment deployed by terraform in github actions
 
-Comparede to vpc.yaml, adding process of storing tfstate file  
+Compared to vpc.yaml, adding process of storing tfstate file  
 File is stored in own private repository   
 
 ```yaml
@@ -36,3 +36,17 @@ File is stored in own private repository
 ```
 
 Private repository name is masked in logs
+
+> [!TIP]
+> Failures of backend
+
+While setting terraform backend as bellow, hashicorp/setup-terraform@v3 can't read tfstate file  
+
+```terraform
+terraform {
+  backend "local" {
+    path = "./terraform.tfstate"
+  }
+}
+```
+despite having copied the tfstate file into terraform work directory  
