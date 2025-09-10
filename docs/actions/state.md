@@ -2,8 +2,8 @@
 > [!NOTE]
 > Workflows -> [state.yaml](../../.github/workflows/state.yaml)
 
-> [!CAUTION]
-> You must delete VPC created by GitHub Actions manually.
+> [!IMPORTANT]
+> You can destroy environment deployed by terraform in github actions
 
 Comparede to vpc.yaml, adding process of storing tfstate file  
 File is stored in own private repository   
