@@ -78,6 +78,10 @@ jobs:
             echo "No existing tfstate, skipping copy."
           fi
 
+      - name: List of workdir
+        run: |
+          ls -al ${{ env.TERRAFORM_WORK_DIR }}
+
       - name: Mask repo name
         run: |
           echo "::add-mask::${{ env.STORE_PATH }}"
@@ -151,6 +155,10 @@ jobs:
           else
             echo "No existing tfstate, skipping copy."
           fi
+
+      - name: List of workdir
+        run: |
+          ls -al ${{ env.TERRAFORM_WORK_DIR }}
 
       - name: Mask repo name
         run: |
