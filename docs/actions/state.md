@@ -72,6 +72,13 @@ on:
         options:
           - apply
           - destroy
+
+# ~~~~~~~~~~~~~~~~~~~~
+jobs:
+# ~~~~~~~~~~~~~~~~~~~~
+
+  apply:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.OPERATE == 'apply'
 ```
 
 Be able to select by dropdown format  
