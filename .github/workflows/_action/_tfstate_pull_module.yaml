@@ -23,8 +23,8 @@ runs:
 
     - name: Copying tfstate file to terraform work directory
       run: |
-          if [ -f "state-repo/${{ inputs.store_path }}" ]; then
-            \cp -f state-repo/${{ inputs.store_path }} ${{ inputs.terraform_work_path }}
+          if [ -f "state-repo/${{ inputs.store_path }}/terraform.tfstate" ]; then
+            \cp -f state-repo/${{ inputs.store_path }}/terraform.tfstate ${{ inputs.terraform_work_path }}
             echo "tfstate overwritten."
           else
             echo "No existing tfstate, skipping copy."
