@@ -83,6 +83,8 @@ jobs:
 
 Be able to select by dropdown format  
 
+![mode select](./images/state_mode_select.png)
+
 > [!TIP]
 > Failures of backend
 
