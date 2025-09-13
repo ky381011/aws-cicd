@@ -1,0 +1,31 @@
+name: "State management"
+description: "Pull tfstate from repository"
+  
+inputs:
+  store_path:
+    description: "Path of tfstate file in storing repository"
+    required: true
+    type: string
+  terraform_work_path:
+    description: "Path of tfstate file overwritten by process of terraform apply/destroy"
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check out
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.repository_owner }}/${{ secrets.STATE_REPO_NAME }}
+        token: ${{ secrets.STATE_REPO_TOKEN }}
+        path: state-repo
+
+    - name: Copying tfstate file to terraform work directory
+      run: |
+          if [ -f "state-repo/${{ inputs.store_path }}" ]; then
+            \cp -f state-repo/${{ inputs.store_path }} ${{ inputs.terraform_work_path }}
+            echo "tfstate overwritten."
+          else
+            echo "No existing tfstate, skipping copy."
+          fi
