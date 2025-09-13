@@ -1,0 +1,29 @@
+name: "State management"
+description: "Push tfstate from repository"
+  
+inputs:
+  store_path:
+    description: "Path of tfstate file in storing repository"
+    required: true
+    type: string
+  terraform_work_path:
+    description: "Path of tfstate file overwritten by process of terraform apply/destroy"
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Overwrite tfstate
+      run: |
+        mkdir -p state-repo/${{ inputs.store_path }}
+        \cp -f ${{ inputs.terraform_work_path }}/terraform.tfstate state-repo/${{ inputs.store_path }}/terraform.tfstate
+    
+    - name: Commit and push new state
+      run: |
+        cd state-repo
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add "${{ inputs.store_path }}/terraform.tfstate"
+        git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
+        git push origin main
