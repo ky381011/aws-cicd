@@ -1,0 +1,23 @@
+name: "Terraform action"
+description: "destroy process"
+  
+inputs:
+  terraform_work_path:
+    description: "Path of tfstate file overwritten by process of terraform apply/destroy"
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Init
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform init -reconfigure
+
+    - name: Terraform Plan
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform plan -out=tfplan
+
+    - name: Terraform Destroy
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform destroy -auto-approve
