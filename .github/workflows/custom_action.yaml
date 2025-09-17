@@ -60,15 +60,19 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Get state file
+        shell: bash
         uses: ./.github/actions/_tfstate_pull_module/
 
       - name: Deploy process apply
+        shell: bash
         if: ${{ github.event.inputs.OPERATE == 'apply' }}
         uses: ./.github/actions/_terraform_apply_module/
 
       - name: Deploy process destroy
+        shell: bash
         if: ${{ github.event.inputs.OPERATE == 'destroy' }}
         uses: ./.github/actions/_terraform_destroy_module/
 
       - name: Upload state file
+        shell: bash
         uses: ./.github/actions/_tfstate_push_module/
