@@ -61,3 +61,9 @@ jobs:
 
       - name: Get state file
         uses: ./_action/_tfstate_pull_module.yaml
+
+      - name: Deploy process apply/destrot
+        uses: ./_action/_terraform_${{ inputs.OPERATE }}_module.yaml
+
+      - name: Upload state file
+        uses: ./_action/_tfstate_push_module.yaml
