@@ -62,8 +62,13 @@ jobs:
       - name: Get state file
         uses: ./_action/_tfstate_pull_module.yaml
 
-      - name: Deploy process apply/destrot
-        uses: ./_action/_terraform_${{ inputs.OPERATE }}_module.yaml
+      - name: Deploy process apply
+        if: ${{ github.event.inputs.OPERATE == 'apply' }}
+        uses: ./_action/_terraform_apply_module.yaml
+
+      - name: Deploy process destroy
+        if: ${{ github.event.inputs.OPERATE == 'destroy' }}
+        uses: ./_action/_terraform_destroy_module.yaml
 
       - name: Upload state file
         uses: ./_action/_tfstate_push_module.yaml
