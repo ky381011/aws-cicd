@@ -71,14 +71,12 @@ jobs:
         if: ${{ github.event.inputs.OPERATE == 'apply' }}
         uses: ./.github/actions/_terraform_apply_module/
         with:
-          store_path: ${{ env.STORE_PATH }}
           terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
 
       - name: Deploy process destroy
         if: ${{ github.event.inputs.OPERATE == 'destroy' }}
         uses: ./.github/actions/_terraform_destroy_module/
         with:
-          store_path: ${{ env.STORE_PATH }}
           terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
 
       - name: Upload state file
