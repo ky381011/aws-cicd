@@ -60,7 +60,6 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Get state file
-        shell: bash
         uses: ./.github/actions/_tfstate_pull_module/
         with:
           state_repo_name: ${{ secrets.STATE_REPO_NAME }}
@@ -83,7 +82,6 @@ jobs:
           terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
 
       - name: Upload state file
-        shell: bash
         uses: ./.github/actions/_tfstate_push_module/
         with:
           state_repo_name: ${{ secrets.STATE_REPO_NAME }}
