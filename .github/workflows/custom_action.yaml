@@ -69,7 +69,6 @@ jobs:
           terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
 
       - name: Deploy process apply
-        shell: bash
         if: ${{ github.event.inputs.OPERATE == 'apply' }}
         uses: ./.github/actions/_terraform_apply_module/
         with:
@@ -77,7 +76,6 @@ jobs:
           terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
 
       - name: Deploy process destroy
-        shell: bash
         if: ${{ github.event.inputs.OPERATE == 'destroy' }}
         uses: ./.github/actions/_terraform_destroy_module/
         with:
