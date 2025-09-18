@@ -18,9 +18,9 @@ on:
 
 env:
   AWS_REGION: ap-northeast-1
-  JOB_NAME: custome_action # Same as job name
-  STORE_PATH: state/${{ github.event.repository.name }}/custome_action
-  TERRAFORM_WORK_DIR: src/custome_action
+  JOB_NAME: custom_action # Same as job name
+  STORE_PATH: state/${{ github.event.repository.name }}/custom_action
+  TERRAFORM_WORK_DIR: src/custom_action
 
 permissions:
   id-token: write
