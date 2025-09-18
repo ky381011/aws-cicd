@@ -26,6 +26,7 @@ runs:
       run: |
         mkdir -p state-repo/${{ inputs.store_path }}
         \cp -f ${{ inputs.terraform_work_path }}/terraform.tfstate state-repo/${{ inputs.store_path }}/terraform.tfstate
+      shell: bash
     
     - name: Commit and push new state
       run: |
@@ -35,3 +36,4 @@ runs:
         git add "${{ inputs.store_path }}/terraform.tfstate"
         git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
         git push origin main
+      shell: bash

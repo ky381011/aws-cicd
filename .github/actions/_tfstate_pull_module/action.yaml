@@ -37,3 +37,4 @@ runs:
           else
             echo "No existing tfstate, skipping copy."
           fi
+      shell: bash

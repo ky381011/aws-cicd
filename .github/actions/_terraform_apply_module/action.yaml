@@ -13,11 +13,14 @@ runs:
     - name: Terraform Init
       working-directory: ${{ inputs.terraform_work_path }}
       run: terraform init -reconfigure
+      shell: bash
 
     - name: Terraform Plan
       working-directory: ${{ inputs.terraform_work_path }}
       run: terraform plan -out=tfplan
+      shell: bash
 
     - name: Terraform Apply
       working-directory: ${{ inputs.terraform_work_path }}
       run: terraform apply -auto-approve tfplan
+      shell: bash
