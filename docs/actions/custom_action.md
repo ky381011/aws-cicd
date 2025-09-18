@@ -1,4 +1,4 @@
-## Using custom action
+## Modularization
 > [!NOTE]
 > Workflows -> [state.yaml](../../.github/workflows/custom_action.yaml)
 
@@ -8,5 +8,11 @@
 Memo  
 - Github actions relative directory is repository root
 - custom action == ./action
-- In order to use "runs:" in custom action, needs "shall: bash" in steps
+- In order to use "runs:" in custom action, needs "shell: bash" in custom actions' steps
 - Secrets can be used in workflow, can't be used in custom action
+
+Modularization of these process  
+- Get state file
+- Terraform apply
+- Terraform destroy
+- Upload state file
