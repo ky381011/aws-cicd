@@ -2,6 +2,14 @@ name: "State management"
 description: "Push tfstate from repository"
   
 inputs:
+  state_repo_name:
+    description: "Repository name of storing state file"
+    required: true
+    type: string
+  state_repo_token:
+    description: "Token for accessing to repository"
+    required: true
+    type: string
   store_path:
     description: "Path of tfstate file in storing repository"
     required: true
