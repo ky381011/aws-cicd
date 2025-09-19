@@ -7,7 +7,7 @@
 
 Memo  
 - Github actions relative directory is repository root
-- custom action == ./action
+- custom action == ./.github/action
 - In order to use "runs:" in custom action, needs "shell: bash" in custom actions' steps
 - Secrets can be used in workflow, can't be used in custom action
 
@@ -16,3 +16,5 @@ Modularization of these process
 - Terraform apply
 - Terraform destroy
 - Upload state file
+
+
