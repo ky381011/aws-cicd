@@ -17,4 +17,6 @@ Modularization of these process
 - Terraform destroy
 - Upload state file
 
-
+By this modularization, becoming easy to reuse common steps  
+These processes are necessary process for deploying with terraform,  
+and managing cloud state by using private github repository  
