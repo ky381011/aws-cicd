@@ -52,12 +52,12 @@ So, must hand over like below in workflow
 
 ```yaml
 - name: Get state file
-        uses: ./.github/actions/_tfstate_pull_module/
-        with:
-          state_repo_name: ${{ secrets.STATE_REPO_NAME }}
-          state_repo_token: ${{ secrets.STATE_REPO_TOKEN }}
-          store_path: ${{ env.STORE_PATH }}
-          terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
+  uses: ./.github/actions/_tfstate_pull_module/
+  with:
+    state_repo_name: ${{ secrets.STATE_REPO_NAME }}
+    state_repo_token: ${{ secrets.STATE_REPO_TOKEN }}
+    store_path: ${{ env.STORE_PATH }}
+    terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
 ```
 
 All secrets value are masked in this workflow log  
