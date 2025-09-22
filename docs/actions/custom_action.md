@@ -90,6 +90,18 @@ runs:
 In first step, prepare aws provider  
 In second step, get the difference from state file  
 In third step, deploy resources
+
+```yaml
+- name: Deploy process apply
+  if: ${{ github.event.inputs.OPERATE == 'apply' }}
+  uses: ./.github/actions/_terraform_apply_module/
+  with:
+    terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
+```
+
+And by ` if: ${{ github.event.inputs.OPERATE == 'apply' }}`,  
+This action is only running if inputs value of "OPERATE" is "apply"  
+
 </details>
   
 <details><summary>Terraform destroy</summary>
