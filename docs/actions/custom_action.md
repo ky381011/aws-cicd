@@ -61,11 +61,35 @@ So, must hand over like below in workflow
 ```
 
 All secrets value are masked in this workflow log  
+  
+By this step, tfstate file is copyed into terraform work directory  
 </details>
   
 <details><summary>Terraform apply</summary>
 
+```yaml
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Init
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform init -reconfigure
+      shell: bash
 
+    - name: Terraform Plan
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform plan -out=tfplan
+      shell: bash
+
+    - name: Terraform Apply
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform apply -auto-approve tfplan
+      shell: bash
+```
+
+In first step, prepare aws provider  
+In second step, get the difference from state file  
+In third step, deploy resources
 </details>
   
 <details><summary>Terraform destroy</summary>
