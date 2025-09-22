@@ -106,6 +106,26 @@ This action is only running if inputs value of "OPERATE" is "apply"
   
 <details><summary>Terraform destroy</summary>
 
+```yaml
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Init
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform init -reconfigure
+      shell: bash
+
+    - name: Terraform Plan
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform plan -out=tfplan
+      shell: bash
+
+    - name: Terraform Destroy
+      working-directory: ${{ inputs.terraform_work_path }}
+      run: terraform destroy -auto-approve
+      shell: bash
+```
+
 
 </details>
   
