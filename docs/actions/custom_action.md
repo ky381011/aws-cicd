@@ -132,5 +132,30 @@ This module is almost similar to pply module
   
 <details><summary>Upload state file</summary>
 
+```yaml
+runs:
+  using: "composite"
+  steps:
+    - name: Overwrite tfstate
+      run: |
+        mkdir -p state-repo/${{ inputs.store_path }}
+        \cp -f ${{ inputs.terraform_work_path }}/terraform.tfstate state-repo/${{ inputs.store_path }}/terraform.tfstate
+      shell: bash
+    
+    - name: Commit and push new state
+      run: |
+        cd state-repo
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add "${{ inputs.store_path }}/terraform.tfstate"
+        git commit -m "Update tfstate $(date -u +'%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
+        git push origin main
+      shell: bash
+```
 
+First, copying tfstate file which have the latest cloud state to directory which contains .git  
+Second, push the latest file  
+  
+When pushing, github actions uses the authentification authorized in pull module  
+So, this module can't be used on its own
 </details>
