@@ -126,7 +126,18 @@ runs:
       shell: bash
 ```
 
-This module is almost similar to pply module 
+This module is almost similar to apply module  
+
+```yaml
+- name: Deploy process destroy
+  if: ${{ github.event.inputs.OPERATE == 'destroy' }}
+  uses: ./.github/actions/_terraform_destroy_module/
+  with:
+    terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
+```
+
+And by ` if: ${{ github.event.inputs.OPERATE == 'destroy' }}`,  
+This action is only running if inputs value of "OPERATE" is "destroy"  
 
 </details>
   
@@ -159,3 +170,4 @@ Second, push the latest file
 When pushing, github actions uses the authentification authorized in pull module  
 So, this module can't be used on its own
 </details>
+  
