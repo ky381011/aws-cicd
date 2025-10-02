@@ -93,3 +93,6 @@ jobs:
         with:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
+
+      - name: Setup python
+        uses: actions/setup-python@v5
