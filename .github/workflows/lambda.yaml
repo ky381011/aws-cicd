@@ -19,9 +19,10 @@ on:
 env:
   AWS_REGION: ap-northeast-1
   JOB_NAME: lambda # Same as job name
-  STORE_PATH: state/${{ github.event.repository.name }}/lambda
-  TERRAFORM_WORK_DIR: src/lambda/terraform
-  APP_WORK_DIR: src/lambda/app
+  # STORE_PATH: state/${{ github.event.repository.name }}/lambda
+  # TERRAFORM_WORK_DIR: src/lambda/terraform
+  # APP_WORK_DIR: src/lambda/app
+  PYTHON_VERSION: 3.13
 
 permissions:
   id-token: write
@@ -96,3 +97,5 @@ jobs:
 
       - name: Setup python
         uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
