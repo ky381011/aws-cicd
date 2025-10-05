@@ -34,6 +34,77 @@ h2::before {
   pointer-events: none;
 }
 
+h3 {
+  position: relative;
+  padding-left: 20px;
+  pointer-events: none;
+}
+
+h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 100%;
+  background: #dbd034;
+  border-radius: 8px;
+}
+
+h4 {
+  position: relative;
+  padding-left: 20px;
+  pointer-events: none;
+}
+
+h4::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 100%;
+  background: #71db34;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+h5 {
+  position: relative;
+  padding-left: 20px;
+  pointer-events: none;
+}
+
+h5::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 100%;
+  background: #34dbb7;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+h6 {
+  position: relative;
+  padding-left: 20px;
+  pointer-events: none;
+}
+
+h6::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 100%;
+  background: #3460db;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
 /* 段落の文字サイズと行間 */
 p {
   font-size: 16px;
