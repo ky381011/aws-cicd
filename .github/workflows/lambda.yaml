@@ -23,6 +23,7 @@ env:
   TERRAFORM_WORK_DIR: src/lambda/terraform
   APP_WORK_DIR: src/lambda/app
   PYTHON_VERSION: 3.13
+  PACKAGE_PATH: lambda.zip
 
 permissions:
   id-token: write
@@ -108,5 +109,5 @@ jobs:
       - name: Create deployment package
         run: |
           cd ${{ env.APP_WORK_DIR }}
-          zip -r ../$OUTPUT_ZIP .
+          zip -r ../${{ env.TERRAFORM_WORK_DIR}}/${{ env.PACKAGE_PATH}} .
           
