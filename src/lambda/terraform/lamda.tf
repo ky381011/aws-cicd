@@ -1,16 +1,16 @@
 resource "aws_lambda_function" "example" {
-  filename         = "lambda_function.zip"
+  filename         = var.package_file_name
   function_name    = "example_lambda"
   role            = aws_iam_role.lambda_role.arn
   handler         = "index.handler"
-  runtime         = "nodejs14.x"
+  runtime         = "python"
   environment {
     variables = {
-      ENV = var.environment
+
     }
   }
   tags = {
-    Environment = var.environment
-    Project     = var.project_name
+    Name = "tf_test"
+    deploy = "github_actions"
   }
 }
