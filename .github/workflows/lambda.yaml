@@ -108,9 +108,7 @@ jobs:
 
       - name: Create deployment package
         run: |
-          cd ${{ env.APP_WORK_DIR }}
-          ls -al
-          zip -r ../${{ env.TERRAFORM_WORK_DIR}}/${{ env.PACKAGE_PATH}} .
+          zip -r ${{ env.TERRAFORM_WORK_DIR}}/${{ env.PACKAGE_PATH}} ${{ env.APP_WORK_DIR }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
