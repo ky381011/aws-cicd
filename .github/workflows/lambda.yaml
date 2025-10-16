@@ -82,9 +82,9 @@ jobs:
             python ${{ env.APP_WORK_DIR }}/test_return_hash.py
 
 
-  create:
+  deploy:
     if: github.event_name == 'workflow_dispatch'
-    name: create vpc
+    name: deploy lambda
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -109,7 +109,7 @@ jobs:
       - name: Create deployment package
         run: |
           cd ${{ env.APP_WORK_DIR }}
-          ll
+          ls -al
           zip -r ../${{ env.TERRAFORM_WORK_DIR}}/${{ env.PACKAGE_PATH}} .
 
       - name: Setup Terraform
