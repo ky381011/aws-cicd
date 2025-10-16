@@ -110,4 +110,35 @@ jobs:
         run: |
           cd ${{ env.APP_WORK_DIR }}
           zip -r ../${{ env.TERRAFORM_WORK_DIR}}/${{ env.PACKAGE_PATH}} .
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Get state file
+        uses: ./.github/actions/_tfstate_pull_module/
+        with:
+          state_repo_name: ${{ secrets.STATE_REPO_NAME }}
+          state_repo_token: ${{ secrets.STATE_REPO_TOKEN }}
+          store_path: ${{ env.STORE_PATH }}
+          terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
+
+      - name: Deploy process apply
+        if: ${{ github.event.inputs.OPERATE == 'apply' }}
+        uses: ./.github/actions/_terraform_apply_module/
+        with:
+          terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
+
+      - name: Deploy process destroy
+        if: ${{ github.event.inputs.OPERATE == 'destroy' }}
+        uses: ./.github/actions/_terraform_destroy_module/
+        with:
+          terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
+
+      - name: Upload state file
+        uses: ./.github/actions/_tfstate_push_module/
+        with:
+          state_repo_name: ${{ secrets.STATE_REPO_NAME }}
+          state_repo_token: ${{ secrets.STATE_REPO_TOKEN }}
+          store_path: ${{ env.STORE_PATH }}
+          terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
           
