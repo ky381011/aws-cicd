@@ -108,7 +108,9 @@ jobs:
 
       - name: Create deployment package
         run: |
-          zip -r ${{ env.TERRAFORM_WORK_DIR}}/${{ env.PACKAGE_PATH}} ${{ env.APP_WORK_DIR }}
+          cd ${{ env.APP_WORK_DIR }}
+          zip -r lambda.zip .
+          cp lambda.zip ${{ github.workspace }}/$TERRAFORM_WORK_DIR/lambda.zip
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
