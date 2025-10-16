@@ -4,11 +4,19 @@ import hashlib
 def lambda_handler(event, context):
     """
     Lambda function that returns the input string hashed with SHA256
-    event = {"text": "hello"}
+    For Function URL requests, the input JSON should be in event["body"].
     """
-    text = None
-    if isinstance(event, dict):
-        text = event.get("text")
+
+    body = event.get("body")
+    if body:
+        try:
+            data = json.loads(body)
+        except json.JSONDecodeError:
+            data = {}
+    else:
+        data = event
+
+    text = data.get("text")
 
     if not text:
         return {
