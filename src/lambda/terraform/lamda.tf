@@ -14,3 +14,14 @@ resource "aws_lambda_function" "example" {
     deploy = "github_actions"
   }
 }
+
+resource "aws_lambda_function_url" "example_url" {
+  function_name      = aws_lambda_function.example.function_name
+  authorization_type = "NONE" # or "AWS_IAM"
+
+  cors {
+    allow_origins  = ["*"]
+    allow_methods  = ["*"]
+    allow_headers  = ["*"]
+  }
+}
