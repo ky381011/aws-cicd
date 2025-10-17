@@ -2,5 +2,5 @@
 > [!NOTE]
 > Workflows -> [lambda.yaml](../../.github/workflows/lambda.yaml)
 
-> [!CAUTION]
-> You must delete VPC created by GitHub Actions manually.
+> [!IMPORTANT]
+> You can destroy environment deployed by terraform in github actions
