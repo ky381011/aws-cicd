@@ -27,3 +27,12 @@ Deploying lambda by terraform, role for gterraform needs policies
     - iam:GetRole
     - iam:ListAttachedRolePolicies
     - iam:ListInstanceProfilesForRole
+
+### Python Process
+1. Test with github actions
+2. 
+
+### Terraform Process
+1. Create role
+2. Create policy and attaching to role
+3. Deploy lambda function
