@@ -30,7 +30,13 @@ Deploying lambda by terraform, role for gterraform needs policies
 
 ### Python Process
 1. Test with github actions
-2. 
+
+Testing process obly run when the latest commit have the difference in app directory
+```yaml
+
+```
+
+2. Packaging files
 
 ### Terraform Process
 1. Create role
