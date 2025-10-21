@@ -31,10 +31,51 @@ Deploying lambda by terraform, role for gterraform needs policies
 ### Python Process
 1. Test with github actions
 
-Testing process obly run when the latest commit have the difference in app directory
+Testing process obly run when the latest commit have the difference in app directory  
+- Check difference
 ```yaml
+diff:
+  runs-on: ubuntu-latest
+  outputs:
+    changed: ${{ steps.diff.outputs.changed }}
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
 
+    - name: Check diff in target directory
+      id: diff
+      run: |
+        if git diff --quiet HEAD^ HEAD -- ${{ env.APP_WORK_DIR }}; then
+          echo "changed=false" >> $GITHUB_OUTPUT
+        else
+          echo "changed=true" >> $GITHUB_OUTPUT
+        fi
 ```
+
+- Test
+```yaml
+test:
+  needs: diff
+  if: needs.diff.outputs.changed == 'true'
+  name: test lambda
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Test python
+      run: |
+          python ${{ env.APP_WORK_DIR }}/test_return_hash.py
+```
+
+
 
 2. Packaging files
 
