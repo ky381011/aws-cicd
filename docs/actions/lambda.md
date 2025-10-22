@@ -75,9 +75,22 @@ test:
           python ${{ env.APP_WORK_DIR }}/test_return_hash.py
 ```
 
-
-
 2. Packaging files
+```yaml
+- name: Install dependencies
+  run: |
+    cd ${{ env.APP_WORK_DIR }}
+    pip install -r requirements.txt -t lib
+
+- name: Create deployment package
+  run: |
+    cd ${{ env.APP_WORK_DIR }}
+    zip -r lambda.zip .
+    cp lambda.zip ${{ github.workspace }}/$TERRAFORM_WORK_DIR/lambda.zip
+```
+First step, install libarary into the work directory  
+Second step, zipping all files including libraries  
+then, copying zip file to terraform work directory  
 
 ### Terraform Process
 1. Create role
