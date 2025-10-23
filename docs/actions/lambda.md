@@ -94,5 +94,24 @@ then, copying zip file to terraform work directory
 
 ### Terraform Process
 1. Create role
+Lambda resource need role for execution  
+
+```terraform
+resource "aws_iam_role" "lambda_role" {
+  name = "lambda-basic-execution"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+      Effect = "Allow"
+    }]
+  })
+}
+```
+
 2. Create policy and attaching to role
 3. Deploy lambda function
