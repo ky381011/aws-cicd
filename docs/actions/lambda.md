@@ -95,6 +95,7 @@ then, copying zip file to terraform work directory
 ### Terraform Process
 1. Create role
 Lambda resource need role for execution  
+Role at below have the minimum service principal  
 
 ```terraform
 resource "aws_iam_role" "lambda_role" {
@@ -112,6 +113,8 @@ resource "aws_iam_role" "lambda_role" {
   })
 }
 ```
+
+`lambda.amazonaws.com` allow lamdba resource itself can access lambda service  
 
 2. Create policy and attaching to role
 3. Deploy lambda function
