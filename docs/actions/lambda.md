@@ -6,7 +6,7 @@
 > You can destroy environment deployed by terraform in github actions
 
 ## Lambda deploy
-Deploying lambda by terraform, role for gterraform needs policies  
+Deploying lambda by terraform, role for terraform needs policies  
 
 ### List of policy for lambda
 - Apply process
@@ -117,4 +117,13 @@ resource "aws_iam_role" "lambda_role" {
 `lambda.amazonaws.com` allow lamdba resource itself can access lambda service  
 
 2. Create policy and attaching to role
+Attaching minimum policy  
+
+```terraform
+resource "aws_iam_role_policy_attachment" "lambda_logs" {
+  role       = aws_iam_role.lambda_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+```
+
 3. Deploy lambda function
