@@ -127,3 +127,41 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 ```
 
 3. Deploy lambda function
+Lambda resource are deployed by  
+
+```terraform
+resource "aws_lambda_function" "example" {
+  filename         = var.package_file_name
+  function_name    = var.function_name
+  role            = aws_iam_role.lambda_role.arn
+  handler         = "return_hash.lambda_handler"
+  runtime         = "python3.13"
+  environment {
+    variables = {
+
+    }
+  }
+  tags = {
+    Name = "tf_test"
+    deploy = "github_actions"
+  }
+}
+```
+
+`filename` is relative path from teraform work directory  
+  
+In order to be able to access by url,
+Another terraform resource is required  
+
+```terraform
+resource "aws_lambda_function_url" "example_url" {
+  function_name      = aws_lambda_function.example.function_name
+  authorization_type = "NONE" # or "AWS_IAM"
+
+  cors {
+    allow_origins  = ["*"]
+    allow_methods  = ["*"]
+    allow_headers  = ["*"]
+  }
+}
+```
