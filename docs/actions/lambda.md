@@ -149,6 +149,7 @@ resource "aws_lambda_function" "example" {
 ```
 
 `filename` is relative path from teraform work directory  
+(ex. `lambda.zip`)
   
 In order to be able to access by url,
 Another terraform resource is required  
