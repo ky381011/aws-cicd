@@ -15,6 +15,7 @@ on:
         options:
           - apply
           - destroy
+          - check
 
 env:
   AWS_REGION: ap-northeast-1
@@ -142,4 +143,11 @@ jobs:
           state_repo_token: ${{ secrets.STATE_REPO_TOKEN }}
           store_path: ${{ env.STORE_PATH }}
           terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
-          
+
+  check:
+    if: github.event_name == 'workflow_dispatch' && ${{ github.event.inputs.OPERATE == 'check' }}
+    name: check connection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
