@@ -110,7 +110,7 @@ jobs:
       - name: Create deployment package
         run: |
           cd ${{ env.APP_WORK_DIR }}
-          zip -r lambda.zip .
+          zip -r lambda.zip . -x "test_return_hash.py"
           cp lambda.zip ${{ github.workspace }}/$TERRAFORM_WORK_DIR/lambda.zip
 
       - name: Setup Terraform
