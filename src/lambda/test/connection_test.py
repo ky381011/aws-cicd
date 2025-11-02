@@ -2,7 +2,7 @@ import json
 import hashlib
 import os
 import urllib.request
-from return_hash import lambda_handler
+from ..app.return_hash import lambda_handler
 
 lambda_url = os.getenv('LAMBDA_URL')
 
