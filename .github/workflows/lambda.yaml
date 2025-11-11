@@ -150,9 +150,12 @@ jobs:
           echo "lambda_url=$(terraform output -raw lambda_function_url)" >> $GITHUB_OUTPUT
 
   check:
-    if: github.event_name == 'workflow_dispatch' && ${{ github.event.inputs.OPERATE == 'check' }}
+    if: github.event_name == 'workflow_dispatch' && ${{ github.event.inputs.OPERATE == 'check' || github.event.inputs.OPERATE == 'deploy' }}
     name: check connection
     runs-on: ubuntu-latest
+    needs: deploy
+    env:
+      LAMBDA_URL: ${{ needs.deploy.outputs.lambda_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
