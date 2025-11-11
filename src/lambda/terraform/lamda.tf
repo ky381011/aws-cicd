@@ -15,7 +15,7 @@ resource "aws_lambda_function" "example" {
   }
 }
 
-resource "aws_lambda_function_url" "example_url" {
+resource "aws_lambda_function_url" "example" {
   function_name      = aws_lambda_function.example.function_name
   authorization_type = "NONE" # or "AWS_IAM"
 
