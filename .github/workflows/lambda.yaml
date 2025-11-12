@@ -181,3 +181,9 @@ jobs:
             echo "❌ Lambda URL not found. Did you run apply?"
             exit 1
           fi
+
+      - name: Check connection
+        run: |
+          echo "Testing Lambda at: $LAMBDA_URL"
+          curl -fsS "$LAMBDA_URL" || (echo "❌ Lambda not responding" && exit 1)
+          
