@@ -170,3 +170,14 @@ jobs:
           state_repo_token: ${{ secrets.STATE_REPO_TOKEN }}
           store_path: ${{ env.STORE_PATH }}
           terraform_work_path: ${{ env.TERRAFORM_WORK_DIR }}
+
+      - name: Get Lambda Function URL
+        id: get_url
+        run: |
+          cd ${{ env.TERRAFORM_WORK_DIR }}
+          if terraform output -raw lambda_function_url &>/dev/null; then
+            echo "lambda_url=$(terraform output -raw lambda_function_url)" >> $GITHUB_ENV
+          else
+            echo "❌ Lambda URL not found. Did you run apply?"
+            exit 1
+          fi
