@@ -9,3 +9,5 @@
 [Detail](./actions/subnet.md)  
 #### 5. Modularization
 [Detail](./actions/custom_action.md)  
+#### 6. Lambda
+[Detail](./actions/lambda.md) 
