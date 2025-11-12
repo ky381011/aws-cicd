@@ -149,7 +149,7 @@ jobs:
         run: |
           echo "lambda_url=$(terraform output -raw lambda_function_url)" >> $GITHUB_OUTPUT
 
-  check:
+  connection:
     if: github.event_name == 'workflow_dispatch' && ${{ github.event.inputs.OPERATE == 'check' || github.event.inputs.OPERATE == 'deploy' }}
     name: check connection
     runs-on: ubuntu-latest
