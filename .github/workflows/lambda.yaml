@@ -145,7 +145,7 @@ jobs:
           terraform_work_path: ${{ env.TERRAFORM_WORK_DIR}}
 
   connection:
-    if: github.event_name == 'workflow_dispatch' && ${{ github.event.inputs.OPERATE == 'check' }}
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.OPERATE == 'check' }}
     name: check connection
     runs-on: ubuntu-latest
     steps:
