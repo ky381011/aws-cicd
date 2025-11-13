@@ -179,10 +179,8 @@ jobs:
       - name: Check connection
         run: |
           echo "Testing Lambda at: ${LAMBDA_URL}"
-          if [ -z "${LAMBDA_URL}" ]; then
-            echo "❌ LAMBDA_URL is empty"
-            exit 1
-          fi
-          echo "${LAMBDA_URL}" | od -c  # optional debug
-          curl -fsS "${LAMBDA_URL}" || (echo "❌ Lambda not responding" && exit 1)
+          curl -fsS -X POST "${LAMBDA_URL}" \
+            -H "Content-Type: application/json" \
+            -d '{"text": "hello"}' \
+            || (echo "❌ Lambda not responding" && exit 1)
           
