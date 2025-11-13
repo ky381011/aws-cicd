@@ -168,8 +168,9 @@ jobs:
         run: |
           cd ${{ env.TERRAFORM_WORK_DIR }}
           if terraform output -raw lambda_function_url &>/dev/null; then
-            lambda_url=$(terraform output -raw lambda_function_url | tr -d '\r\n')
-            echo "lambda_url=${lambda_url}" >> $GITHUB_ENV
+            LAMBDA_URL=$(terraform output -raw lambda_function_url | tr -d '\r\n')
+            echo "LAMBDA_URL=${LAMBDA_URL}" >> $GITHUB_ENV
+            echo "✅ Lambda URL: ${LAMBDA_URL}"
           else
             echo "❌ Lambda URL not found. Did you run apply?"
             exit 1
@@ -177,6 +178,11 @@ jobs:
 
       - name: Check connection
         run: |
-          echo "Testing Lambda at: $LAMBDA_URL"
-          curl -fsS "$LAMBDA_URL" || (echo "❌ Lambda not responding" && exit 1)
+          echo "Testing Lambda at: ${LAMBDA_URL}"
+          if [ -z "${LAMBDA_URL}" ]; then
+            echo "❌ LAMBDA_URL is empty"
+            exit 1
+          fi
+          echo "${LAMBDA_URL}" | od -c  # optional debug
+          curl -fsS "${LAMBDA_URL}" || (echo "❌ Lambda not responding" && exit 1)
           
