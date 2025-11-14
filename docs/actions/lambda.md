@@ -8,6 +8,12 @@
 ## Lambda deploy
 Deploying lambda by terraform, role for terraform needs policies  
 
+| Job         | tfstate operation            | Terraform operation       | Feature              |
+| ----------- | --------------------- | ---------------------------- | ------------------- |
+| **apply**   | pull → apply → push   | `_terraform_apply_module_`   | Lambda deploy         |
+| **destroy** | pull → destroy → push | `_terraform_destroy_module_` | Lambda destroy           |
+| **check**   | pull               | `terraform output`           | Get Lambda URL and connection check |
+
 ### List of policy for lambda
 - Apply process
   - Need
@@ -169,9 +175,5 @@ resource "aws_lambda_function_url" "example_url" {
 
 
 
-| Job         | tfstate operation            | Terraform operation       | Feature              |
-| ----------- | --------------------- | ---------------------------- | ------------------- |
-| **apply**   | pull → apply → push   | `_terraform_apply_module_`   | Lambda deploy         |
-| **destroy** | pull → destroy → push | `_terraform_destroy_module_` | Lambda destroy           |
-| **check**   | pull               | `terraform output`           | Get Lambda URL and connection check |
+
 
