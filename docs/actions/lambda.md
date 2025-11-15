@@ -173,6 +173,9 @@ resource "aws_lambda_function_url" "example_url" {
 }
 ```
 
+### Connection check process
+1. Get tfstate for getting lambda URL
+
 
 
 
