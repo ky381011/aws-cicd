@@ -176,6 +176,24 @@ resource "aws_lambda_function_url" "example_url" {
 ### Connection check process
 1. Get tfstate for getting lambda URL
 
+Whole process is below
+```yaml
+- name: Get Lambda Function URL
+  id: get_url
+  run: |
+    cd ${{ env.TERRAFORM_WORK_DIR }}
+    if terraform output -raw lambda_function_url &>/dev/null; then
+      LAMBDA_URL=$(terraform output -raw lambda_function_url | tr -d '\r\n')
+      echo "LAMBDA_URL=${LAMBDA_URL}" >> $GITHUB_ENV
+      echo "✅ Lambda URL: ${LAMBDA_URL}"
+    else
+      echo "❌ Lambda URL not found. Did you run apply?"
+      exit 1
+    fi
+```
+
+`terraform output -raw lambda_function_url | tr -d '\r\n'` is getting lambda url process  
+Then, url is set into environmental variables  
 
 
 
