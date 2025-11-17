@@ -195,6 +195,13 @@ Whole process is below
 `terraform output -raw lambda_function_url | tr -d '\r\n'` is getting lambda url process  
 Then, url is set into environmental variables  
 
-
-
-
+Then, connection is checked by  
+```yaml
+- name: Check connection
+  run: |
+    echo "Testing Lambda at: ${LAMBDA_URL}"
+    curl -fsS -X POST "${LAMBDA_URL}" \
+      -H "Content-Type: application/json" \
+      -d '{"text": "hello"}' \
+      || (echo "❌ Lambda not responding" && exit 1)
+```
