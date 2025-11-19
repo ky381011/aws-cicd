@@ -4,6 +4,9 @@ resource "aws_lambda_function" "example" {
   role            = aws_iam_role.lambda_role.arn
   handler         = "return_hash.lambda_handler"
   runtime         = "python3.13"
+
+  source_code_hash = filebase64sha256(var.package_file_name)
+
   environment {
     variables = {
 
