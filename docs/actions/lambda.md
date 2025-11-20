@@ -142,6 +142,9 @@ resource "aws_lambda_function" "example" {
   role            = aws_iam_role.lambda_role.arn
   handler         = "return_hash.lambda_handler"
   runtime         = "python3.13"
+
+  source_code_hash = filebase64sha256(var.package_file_name)
+
   environment {
     variables = {
 
@@ -156,6 +159,8 @@ resource "aws_lambda_function" "example" {
 
 `filename` is relative path from teraform work directory  
 (ex. `lambda.zip`)
+
+`source_code_hash = filebase64sha256(var.package_file_name)` is for detecting difference of zip file  
   
 In order to be able to access by url,
 Another terraform resource is required  
