@@ -210,3 +210,7 @@ Then, connection is checked by
       -d '{"text": "hello"}' \
       || (echo "❌ Lambda not responding" && exit 1)
 ```
+
+### Python code
+Recieving body data and returning hashed date  
+If http request don't have body, returning error  
