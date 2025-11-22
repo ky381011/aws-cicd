@@ -214,3 +214,19 @@ Then, connection is checked by
 ### Python code
 Recieving body data and returning hashed date  
 If http request don't have body, returning error  
+
+```python
+if not text:
+    return {
+        "statusCode": 400,
+        "body": json.dumps({"error": "No text provided"})
+    }
+
+# Hash using SHA256
+hashed = hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+return {
+    "statusCode": 200,
+    "body": json.dumps({"hash": hashed})
+}
+```
