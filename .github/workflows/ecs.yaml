@@ -16,3 +16,29 @@ on:
           - apply
           - destroy
           - check
+
+env:
+  AWS_REGION: ap-northeast-1
+  JOB_NAME: ecs # Same as job name
+  STORE_PATH: state/${{ github.event.repository.name }}/ecs
+  TERRAFORM_WORK_DIR: src/ecs/terraform
+  APP_WORK_DIR: src/ecs/app
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  check:
+    if: github.event_name != 'workflow_dispatch'
+    name: check credentials
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: 'arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_VPC_ACCESS_ROLE }}'
