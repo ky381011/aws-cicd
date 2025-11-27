@@ -7,12 +7,6 @@ resource "aws_vpc" "vpc"{
   }
 }
 
-variable "subnet_cidrs" {
-  default = {
-    subnet0  = "172.16.0.0/24"
-  }
-}
-
 resource "aws_subnet" "subnets" {
   for_each = var.subnet_cidrs
 
