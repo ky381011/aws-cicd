@@ -16,3 +16,8 @@ variable "subnet_cidrs" {
     subnet0  = "172.16.0.0/24"
   }
 }
+
+# Compute Variables
+variable "instance_type" {
+  default = "t3.micro"
+}
