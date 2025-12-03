@@ -17,8 +17,10 @@ variable "subnet_cidrs" {
   }
 }
 
-variable "ec2_nic_cidr" {
-  default = "172.16.0.10"
+variable "ec2_nic_cidrs" {
+  default = {
+    nic0 = "172.16.0.10"
+  }
 }
 
 # Compute Variables

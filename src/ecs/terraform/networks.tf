@@ -14,8 +14,10 @@ resource "aws_subnet" "subnets" {
 }
 
 resource "aws_network_interface" "ec2_nic" {
+  for_each = var.ec2_nic_cidrs
+
   subnet_id   = aws_subnet.subnets.id
-  private_ips = var.ec2_nic_cidr
+  private_ips = each.value
 
   tags = var.tags
 }
