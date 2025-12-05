@@ -18,6 +18,10 @@ resource "aws_instance" "ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ecs_profile.name
+  }
+
   primary_network_interface {
     network_interface_id = aws_network_interface.ec2_nic.id
   }
