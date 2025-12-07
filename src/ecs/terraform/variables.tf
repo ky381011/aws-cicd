@@ -32,3 +32,11 @@ variable "instance_type" {
 variable "ecs_instance_role_name" {
   default = "ecs-instance-role"
 }
+
+variable "ecs_instance_policy_arn" {
+  default = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
+
+variable "ecs_profile_name" {
+  default = "ecs-instance-profile"
+}
