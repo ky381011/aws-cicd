@@ -27,3 +27,8 @@ variable "ec2_nic_cidrs" {
 variable "instance_type" {
   default = "t3.micro"
 }
+
+# Authority Variables
+variable "ecs_instance_role_name" {
+  default = "ecs-instance-role"
+}
