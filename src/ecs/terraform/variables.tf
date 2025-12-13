@@ -1,4 +1,6 @@
+# ================================
 # Common Variables
+# ================================
 variable "tags" {
   default = {
     Name = "tf_test"
@@ -6,7 +8,9 @@ variable "tags" {
   }
 }
 
+# ================================
 # Network Variables
+# ================================
 variable "vpc_cidr" {
   default = "172.16.0.0/20"
 }
@@ -67,12 +71,16 @@ variable "sg_egress_rules" {
   ]
 }
 
+# ================================
 # Compute Variables
+# ================================
 variable "instance_type" {
   default = "t3.micro"
 }
 
+# ================================
 # Authority Variables
+# ================================
 variable "ecs_instance_role_name" {
   default = "ecs-instance-role"
 }
