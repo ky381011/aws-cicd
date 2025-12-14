@@ -2,5 +2,5 @@
   "markdown.styles": [
     ".vscode/style.css"
   ],
-  "editor.fontFamily": "'BIZ UDゴシック', Consolas, 'Courier New', monospace"
+  //"editor.fontFamily": "'BIZ UDゴシック', Consolas, 'Courier New', monospace"
 }
