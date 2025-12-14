@@ -39,7 +39,7 @@ resource "aws_vpc_security_group_ingress_rule" "ingress" {
   ip_protocol = each.value.protocol
   from_port   = each.value.from_port
   to_port     = each.value.to_port
-  cidr_blocks = each.value.cidr_blocks
+  cidr_ipv4 = each.value.cidr_blocks
 }
 
 resource "aws_vpc_security_group_egress_rule" "egress" {
@@ -53,5 +53,5 @@ resource "aws_vpc_security_group_egress_rule" "egress" {
   ip_protocol = each.value.protocol
   from_port   = each.value.from_port
   to_port     = each.value.to_port
-  cidr_blocks = each.value.cidr_blocks
+  cidr_ipv4 = each.value.cidr_blocks
 }
