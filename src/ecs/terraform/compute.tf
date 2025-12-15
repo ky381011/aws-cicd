@@ -15,13 +15,15 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "ec2" {
+  for_each = var.ec2_nic_cidrs
+
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
+  iam_instance_profile = aws_iam_instance_profile.ecs_profile.name
 
   primary_network_interface {
-    network_interface_id = aws_network_interface.ec2_nic.id
+    network_interface_id = aws_network_interface.ec2_nic[each.key].id
   }
 
   tags = var.tags
