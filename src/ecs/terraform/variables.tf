@@ -3,7 +3,7 @@
 # ================================
 variable "tags" {
   default = {
-    Name = "tf_test"
+    Name   = "tf_test"
     deploy = "github_actions"
   }
 }
@@ -17,7 +17,7 @@ variable "vpc_cidr" {
 
 variable "subnet_cidrs" {
   default = {
-    subnet0  = "172.16.0.0/24"
+    subnet0 = "172.16.0.0/24"
   }
 }
 
