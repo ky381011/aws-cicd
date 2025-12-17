@@ -15,16 +15,18 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "ec2" {
-  for_each = var.ec2_nic_cidrs
-
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
   iam_instance_profile = aws_iam_instance_profile.ecs_profile.name
 
-  primary_network_interface {
-    network_interface_id = aws_network_interface.ec2_nic[each.key].id
-  }
-
   tags = var.tags
+}
+
+resource "aws_network_interface_attachment" "nic_attachment" {
+  for_each = var.ec2_nic_cidrs
+
+  instance_id          = aws_instance.ec2.id
+  network_interface_id = aws_network_interface.ec2_nic[each.key].id
+  device_index         = index(keys(var.ec2_nic_cidrs), each.key)
 }
