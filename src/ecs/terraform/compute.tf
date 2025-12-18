@@ -18,6 +18,8 @@ resource "aws_instance" "ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
+  # subnet_id = map()
+
   iam_instance_profile = aws_iam_instance_profile.ecs_profile.name
 
   tags = var.tags
