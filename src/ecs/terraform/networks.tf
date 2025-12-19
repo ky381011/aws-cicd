@@ -1,8 +1,16 @@
+# ================================
+# VPC
+# ================================
+
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   tags                 = var.tags
 }
+
+# ================================
+# Subnets
+# ================================
 
 resource "aws_subnet" "subnets" {
   for_each = var.subnet_cidrs
@@ -13,6 +21,10 @@ resource "aws_subnet" "subnets" {
   tags = var.tags
 }
 
+# ================================
+# NIC
+# ================================
+
 resource "aws_network_interface" "ec2_nic" {
   for_each = var.ec2_nic_cidrs
 
@@ -21,6 +33,10 @@ resource "aws_network_interface" "ec2_nic" {
 
   tags = var.tags
 }
+
+# ================================
+# Security Group
+# ================================
 
 resource "aws_security_group" "ec2_sg" {
   vpc_id = aws_vpc.vpc.id
