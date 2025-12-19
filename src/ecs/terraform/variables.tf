@@ -12,18 +12,24 @@ variable "tags" {
 # Network Variables
 # ================================
 variable "vpc_cidr" {
-  default = "172.16.0.0/20"
+  type        = string
+  description = "CIDR block for VPC"
+  default     = "172.16.0.0/20"
 }
 
 variable "subnet_cidrs" {
+  type        = map(string)
+  description = "Map of subnet names to CIDR blocks"
   default = {
     subnet0 = "172.16.0.0/24"
   }
 }
 
 variable "ec2_nic_cidrs" {
+  type        = map(list(string))
+  description = "Map of NIC names to private IP addresses (must match subnet_cidrs keys)"
   default = {
-    nic0 = "172.16.0.10"
+    subnet0 = ["172.16.0.10"]
   }
 }
 
