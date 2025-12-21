@@ -11,12 +11,21 @@ variable "tags" {
 # ================================
 # Network Variables
 # ================================
+
+# VPC
 variable "vpc_cidr" {
   type        = string
   description = "CIDR block for VPC"
   default     = "172.16.0.0/20"
 }
 
+variable "enable_dns_hostnames" {
+  type        = bool
+  description = "Enable DNS hostnames in the VPC"
+  default     = true
+}
+
+# Subnets
 variable "subnet_cidrs" {
   type        = map(string)
   description = "Map of subnet names to CIDR blocks"
@@ -25,6 +34,7 @@ variable "subnet_cidrs" {
   }
 }
 
+# NICs
 variable "ec2_nic_cidrs" {
   type        = map(list(string))
   description = "Map of NIC names to private IP addresses (must match subnet_cidrs keys)"
@@ -33,6 +43,7 @@ variable "ec2_nic_cidrs" {
   }
 }
 
+# Security Group Rules
 variable "sg_ingress_rules" {
   description = "Ingress rules for the EC2 SG"
   type = list(object({
