@@ -13,16 +13,16 @@ variable "tags" {
 # ================================
 
 # VPC
-variable "vpc_cidr" {
-  type        = string
-  description = "CIDR block for VPC"
-  default     = "172.16.0.0/20"
-}
-
-variable "enable_dns_hostnames" {
-  type        = bool
-  description = "Enable DNS hostnames in the VPC"
-  default     = true
+variable "vpc" {
+  description = "VPC configuration"
+  type = object({
+    cidr_block           = string
+    enable_dns_hostnames = bool
+  })
+  default = {
+    cidr_block           = "172.16.0.0/20"
+    enable_dns_hostnames = true
+  }
 }
 
 # Subnets
