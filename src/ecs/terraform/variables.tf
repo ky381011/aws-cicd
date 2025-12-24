@@ -26,86 +26,100 @@ variable "vpc" {
 }
 
 # Subnets
-variable "subnet_cidrs" {
-  type        = map(string)
-  description = "Map of subnet names to CIDR blocks"
+variable "subnet" {
+  description = "Subnet configuration"
+  type = object({
+    cidrs = map(string)
+  })
   default = {
-    subnet0 = "172.16.0.0/24"
+    cidrs = {
+      subnet0 = "172.16.0.0/24"
+    }
   }
 }
 
 # NICs
-variable "ec2_nic_cidrs" {
-  type        = map(list(string))
-  description = "Map of NIC names to private IP addresses (must match subnet_cidrs keys)"
+variable "nic" {
+  description = "Network interface configuration"
+  type = object({
+    ec2_cidrs = map(list(string))
+  })
   default = {
-    subnet0 = ["172.16.0.10"]
+    ec2_cidrs = {
+      subnet0 = ["172.16.0.10"]
+    }
   }
 }
 
-# Security Group Rules
-variable "sg_ingress_rules" {
-  description = "Ingress rules for the EC2 SG"
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-  }))
-
-  default = [
-    {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
-}
-
-variable "sg_egress_rules" {
-  description = "Egress rules for the EC2 SG"
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-  }))
-
-  default = [
-    {
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
+# Security Group
+variable "security_group" {
+  description = "Security group configuration"
+  type = object({
+    ingress_rules = list(object({
+      from_port   = number
+      to_port     = number
+      protocol    = string
+      cidr_blocks = list(string)
+    }))
+    egress_rules = list(object({
+      from_port   = number
+      to_port     = number
+      protocol    = string
+      cidr_blocks = list(string)
+    }))
+  })
+  default = {
+    ingress_rules = [
+      {
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+      },
+      {
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+      }
+    ]
+    egress_rules = [
+      {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+      }
+    ]
+  }
 }
 
 # ================================
 # Compute Variables
 # ================================
-variable "instance_type" {
-  default = "t3.micro"
+variable "compute" {
+  description = "Compute configuration"
+  type = object({
+    instance_type = string
+  })
+  default = {
+    instance_type = "t3.micro"
+  }
 }
 
 # ================================
 # Authority Variables
 # ================================
-variable "ecs_instance_role_name" {
-  default = "ecs-instance-role"
-}
-
-variable "ecs_instance_policy_arn" {
-  default = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-}
-
-variable "ecs_profile_name" {
-  default = "ecs-instance-profile"
+variable "authority" {
+  description = "IAM authority configuration"
+  type = object({
+    instance_role_name   = string
+    instance_policy_arn  = string
+    profile_name         = string
+  })
+  default = {
+    instance_role_name  = "ecs-instance-role"
+    instance_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+    profile_name        = "ecs-instance-profile"
+  }
 }

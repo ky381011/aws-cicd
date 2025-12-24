@@ -13,7 +13,7 @@ resource "aws_vpc" "vpc" {
 # ================================
 
 resource "aws_subnet" "subnets" {
-  for_each = var.subnet_cidrs
+  for_each = var.subnet.cidrs
 
   vpc_id     = aws_vpc.vpc.id
   cidr_block = each.value
@@ -26,7 +26,7 @@ resource "aws_subnet" "subnets" {
 # ================================
 
 resource "aws_network_interface" "ec2_nic" {
-  for_each = var.ec2_nic_cidrs
+  for_each = var.nic.ec2_cidrs
 
   subnet_id   = aws_subnet.subnets[each.key].id
   private_ips = each.value
@@ -46,7 +46,7 @@ resource "aws_security_group" "ec2_sg" {
 
 resource "aws_vpc_security_group_ingress_rule" "ingress" {
   for_each = {
-    for idx, rule in var.sg_ingress_rules :
+    for idx, rule in var.security_group.ingress_rules :
     idx => rule
   }
 
@@ -60,7 +60,7 @@ resource "aws_vpc_security_group_ingress_rule" "ingress" {
 
 resource "aws_vpc_security_group_egress_rule" "egress" {
   for_each = {
-    for idx, rule in var.sg_egress_rules :
+    for idx, rule in var.security_group.egress_rules :
     idx => rule
   }
 
