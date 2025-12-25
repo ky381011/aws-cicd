@@ -97,7 +97,7 @@ variable "security_group" {
 # ================================
 # Compute Variables
 # ================================
-variable "compute" {
+variable "ec2" {
   description = "Compute configuration"
   type = object({
     instance_type = string

@@ -16,7 +16,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "ec2" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = var.compute.instance_type
+  instance_type = var.ec2.instance_type
 
   # subnet_id = map()
 
