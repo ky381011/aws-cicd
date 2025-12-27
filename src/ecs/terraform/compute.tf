@@ -1,9 +1,9 @@
-data "aws_ami" "amazon_linux" {
+data "aws_ami" "ubuntu" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["al2023-ami-*-x86_64"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
 
   filter {
@@ -11,24 +11,27 @@ data "aws_ami" "amazon_linux" {
     values = ["hvm"]
   }
 
-  owners = ["137112412989"] # Amazon
+  owners = ["099720109477"] # Canonical
 }
 
 resource "aws_instance" "ec2" {
-  ami           = data.aws_ami.amazon_linux.id
-  instance_type = var.ec2.instance_type
+  for_each = var.ec2_nic_cidrs
 
-  # subnet_id = map()
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
 
   iam_instance_profile = aws_iam_instance_profile.ecs_profile.name
 
+  primary_network_interface {
+    network_interface_id = aws_network_interface.ec2_nic[each.key].id
+  }
+
+  root_block_device {
+    volume_type           = var.root_volume_type
+    volume_size           = var.root_volume_size
+    delete_on_termination = var.root_volume_delete_on_termination
+    encrypted             = var.root_volume_encrypted
+  }
+
   tags = var.tags
-}
-
-resource "aws_network_interface_attachment" "nic_attachment" {
-  for_each = var.nic.ec2_cidrs
-
-  instance_id          = aws_instance.ec2.id
-  network_interface_id = aws_network_interface.ec2_nic[each.key].id
-  device_index         = index(keys(var.nic.ec2_cidrs), each.key)
 }
