@@ -18,7 +18,7 @@ resource "aws_instance" "ec2" {
   for_each = var.ec2_nic_cidrs
 
   ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
+  instance_type = var.ec2.instance_type
 
   iam_instance_profile = aws_iam_instance_profile.ecs_profile.name
 
@@ -27,10 +27,10 @@ resource "aws_instance" "ec2" {
   }
 
   root_block_device {
-    volume_type           = var.root_volume_type
-    volume_size           = var.root_volume_size
-    delete_on_termination = var.root_volume_delete_on_termination
-    encrypted             = var.root_volume_encrypted
+    volume_type           = var.ec2.root_volume.type
+    volume_size           = var.ec2.root_volume.size
+    delete_on_termination = var.ec2.root_volume.delete_on_termination
+    encrypted             = var.ec2.root_volume.encrypted
   }
 
   tags = var.tags

@@ -74,29 +74,26 @@ variable "sg_egress_rules" {
 # ================================
 # Compute Variables
 # ================================
-variable "instance_type" {
-  default = "t3.micro"
-}
-
-# Root Volume Configuration
-variable "root_volume_type" {
-  description = "Root volume type (gp2, gp3, io1, io2)"
-  default     = "gp3"
-}
-
-variable "root_volume_size" {
-  description = "Root volume size in GB"
-  default     = 30
-}
-
-variable "root_volume_delete_on_termination" {
-  description = "Delete root volume on instance termination"
-  default     = true
-}
-
-variable "root_volume_encrypted" {
-  description = "Enable root volume encryption"
-  default     = true
+variable "ec2" {
+  description = "EC2 instance configuration"
+  type = object({
+    instance_type = string
+    root_volume = object({
+      type                  = string
+      size                  = number
+      delete_on_termination = bool
+      encrypted             = bool
+    })
+  })
+  default = {
+    instance_type = "t3.micro"
+    root_volume = {
+      type                  = "gp3"
+      size                  = 30
+      delete_on_termination = true
+      encrypted             = true
+    }
+  }
 }
 
 # ================================
