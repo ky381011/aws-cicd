@@ -22,14 +22,15 @@ resource "aws_subnet" "subnets" {
 }
 
 # ================================
-# NIC
+# Network Interface (NIC)
 # ================================
 
 resource "aws_network_interface" "ec2_nic" {
   for_each = var.nic.ec2_cidrs
 
-  subnet_id   = aws_subnet.subnets[each.key].id
-  private_ips = each.value
+  subnet_id       = aws_subnet.subnets[each.key].id
+  private_ips     = each.value
+  security_groups = [aws_security_group.ec2_sg.id]
 
   tags = var.tags
 }

@@ -15,7 +15,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "ec2" {
-  for_each = var.ec2_nic_cidrs
+  for_each = var.nic.ec2_cidrs
 
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.ec2.instance_type

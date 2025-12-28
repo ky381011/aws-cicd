@@ -11,64 +11,83 @@ variable "tags" {
 # ================================
 # Network Variables
 # ================================
-variable "vpc_cidr" {
-  default = "172.16.0.0/20"
-}
-
-variable "subnet_cidrs" {
+variable "vpc" {
+  description = "VPC configuration"
+  type = object({
+    cidr_block           = string
+    enable_dns_hostnames = bool
+  })
   default = {
-    subnet0 = "172.16.0.0/24"
+    cidr_block           = "172.16.0.0/20"
+    enable_dns_hostnames = true
   }
 }
 
-variable "ec2_nic_cidrs" {
+variable "subnet" {
+  description = "Subnet configuration"
+  type = object({
+    cidrs = map(string)
+  })
   default = {
-    nic0 = "172.16.0.10"
+    cidrs = {
+      subnet0 = "172.16.0.0/24"
+    }
   }
 }
 
-variable "sg_ingress_rules" {
-  description = "Ingress rules for the EC2 SG"
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-  }))
-
-  default = [
-    {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+variable "nic" {
+  description = "Network interface configuration"
+  type = object({
+    ec2_cidrs = map(list(string))
+  })
+  default = {
+    ec2_cidrs = {
+      subnet0 = ["172.16.0.10"]
     }
-  ]
+  }
 }
 
-variable "sg_egress_rules" {
-  description = "Egress rules for the EC2 SG"
-  type = list(object({
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-  }))
+variable "security_group" {
+  description = "Security group configuration"
+  type = object({
+    ingress_rules = list(object({
+      from_port   = number
+      to_port     = number
+      protocol    = string
+      cidr_blocks = string
+    }))
+    egress_rules = list(object({
+      from_port   = number
+      to_port     = number
+      protocol    = string
+      cidr_blocks = string
+    }))
+  })
 
-  default = [
-    {
-      from_port   = 0
-      to_port     = 0
-      protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
-  ]
+  default = {
+    ingress_rules = [
+      {
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = "0.0.0.0/0"
+      },
+      {
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = "0.0.0.0/0"
+      }
+    ]
+    egress_rules = [
+      {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = "0.0.0.0/0"
+      }
+    ]
+  }
 }
 
 # ================================
