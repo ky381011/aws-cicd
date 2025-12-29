@@ -14,12 +14,12 @@ resource "aws_iam_role" "ecs_instance_role" {
 
 resource "aws_iam_role_policy_attachment" "ecs_instance_role_attach" {
   role       = aws_iam_role.ecs_instance_role.name
-  policy_arn = var.authority.instance_policy_arn
+  policy_arn = var.authority.policy_arns.ecs_service
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_ssm_policy" {
   role       = aws_iam_role.ecs_instance_role.name
-  policy_arn = var.authority.ssm_policy_arn
+  policy_arn = var.authority.policy_arns.ssm_core
 }
 
 resource "aws_iam_instance_profile" "ecs_profile" {

@@ -121,15 +121,19 @@ variable "ec2" {
 variable "authority" {
   description = "IAM role and policy configuration for ECS instances"
   type = object({
-    instance_role_name   = string
-    instance_policy_arn  = string
-    ssm_policy_arn       = string
-    profile_name         = string
+    instance_role_name = string
+    profile_name       = string
+    policy_arns = object({
+      ecs_service = string
+      ssm_core    = string
+    })
   })
   default = {
-    instance_role_name  = "ecs-instance-role"
-    instance_policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-    ssm_policy_arn      = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-    profile_name        = "ecs-instance-profile"
+    instance_role_name = "ecs-instance-role"
+    profile_name       = "ecs-instance-profile"
+    policy_arns = {
+      ecs_service = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+      ssm_core    = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+    }
   }
 }
