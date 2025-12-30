@@ -123,10 +123,7 @@ variable "authority" {
   type = object({
     instance_role_name = string
     profile_name       = string
-    policy_arns = object({
-      ecs_service = string
-      ssm_core    = string
-    })
+    policy_arns        = map(string)
   })
   default = {
     instance_role_name = "ecs-instance-role"
