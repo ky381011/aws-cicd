@@ -6,7 +6,8 @@ applyTo: '**.tf'
 ## Resources
 
 ## Variables
-- Need type definition
-- Need default value
+- Need type definition.
+- Need default value.
+- Do not use list as well as possible. Instead, use map object.
 
 ## Outputs
