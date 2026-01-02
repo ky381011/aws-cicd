@@ -12,14 +12,11 @@ resource "aws_iam_role" "ecs_instance_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_instance_role_attach" {
-  role       = aws_iam_role.ecs_instance_role.name
-  policy_arn = var.authority.policy_arns.ecs_service
-}
+resource "aws_iam_role_policy_attachment" "ecs_policies" {
+  for_each = var.authority.policy_arns
 
-resource "aws_iam_role_policy_attachment" "ecs_ssm_policy" {
   role       = aws_iam_role.ecs_instance_role.name
-  policy_arn = var.authority.policy_arns.ssm_core
+  policy_arn = each.value
 }
 
 resource "aws_iam_instance_profile" "ecs_profile" {
