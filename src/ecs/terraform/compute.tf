@@ -14,11 +14,17 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+resource "aws_key_pair" "ec2_key" {
+  key_name   = var.ssh_key_name
+  public_key = var.ssh_public_key
+}
+
 resource "aws_instance" "ec2" {
   for_each = var.nic.ec2_cidrs
 
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.ec2.instance_type
+  key_name      = aws_key_pair.ec2_key.key_name
 
   iam_instance_profile = aws_iam_instance_profile.ecs_profile.name
 
