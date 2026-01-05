@@ -118,16 +118,17 @@ variable "ec2" {
 # ================================
 # SSH Key Variables
 # ================================
-variable "ssh_key_name" {
-  description = "Name of the SSH key pair"
-  type        = string
-  default     = "ec2-key"
-}
-
-variable "ssh_public_key" {
-  description = "SSH public key for EC2 instance access"
-  type        = string
-  sensitive   = true
+variable "ssh_key" {
+  description = "SSH key pair configuration"
+  type = object({
+    name       = string
+    public_key = string
+  })
+  default = {
+    name       = "ec2-key"
+    public_key = ""
+  }
+  sensitive = true
 }
 
 # ================================
