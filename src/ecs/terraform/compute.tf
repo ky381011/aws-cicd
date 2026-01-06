@@ -39,5 +39,7 @@ resource "aws_instance" "ec2" {
     encrypted             = var.ec2.root_volume.encrypted
   }
 
+  // user_data = ...
+
   tags = var.tags
 }
