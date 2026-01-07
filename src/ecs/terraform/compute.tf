@@ -19,9 +19,13 @@ resource "aws_key_pair" "ec2_key" {
   public_key = var.ssh_key.public_key
 }
 
-resource "aws_instance" "ec2" {
-  for_each = var.nic.ec2_cidrs
+locals {
+  nic_keys = keys(var.nic.ec2_cidrs)
+  primary_nic_key = local.nic_keys[0]
+  additional_nic_keys = slice(local.nic_keys, 1, length(local.nic_keys))
+}
 
+resource "aws_instance" "ec2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.ec2.instance_type
   key_name      = aws_key_pair.ec2_key.key_name
@@ -29,7 +33,7 @@ resource "aws_instance" "ec2" {
   iam_instance_profile = aws_iam_instance_profile.ecs_profile.name
 
   primary_network_interface {
-    network_interface_id = aws_network_interface.ec2_nic[each.key].id
+    network_interface_id = aws_network_interface.ec2_nic[local.primary_nic_key].id
   }
 
   root_block_device {
@@ -42,4 +46,12 @@ resource "aws_instance" "ec2" {
   // user_data = ...
 
   tags = var.tags
+}
+
+resource "aws_network_interface_attachment" "additional_nics" {
+  for_each = toset(local.additional_nic_keys)
+
+  instance_id          = aws_instance.ec2.id
+  network_interface_id = aws_network_interface.ec2_nic[each.key].id
+  device_index         = index(local.additional_nic_keys, each.key) + 1
 }
