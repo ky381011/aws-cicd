@@ -26,7 +26,7 @@ resource "aws_subnet" "subnets" {
 # ================================
 
 resource "aws_network_interface" "ec2_nic" {
-  for_each = var.nic.ec2_cidrs
+  for_each = var.ec2.nics
 
   subnet_id       = aws_subnet.subnets[each.key].id
   private_ips     = each.value

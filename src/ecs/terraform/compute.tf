@@ -20,7 +20,7 @@ resource "aws_key_pair" "ec2_key" {
 }
 
 locals {
-  nic_keys = keys(var.nic.ec2_cidrs)
+  nic_keys = keys(var.ec2.nics)
   primary_nic_key = local.nic_keys[0]
   additional_nic_keys = slice(local.nic_keys, 1, length(local.nic_keys))
 }

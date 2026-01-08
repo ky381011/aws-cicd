@@ -35,18 +35,6 @@ variable "subnet" {
   }
 }
 
-variable "nic" {
-  description = "Network interface configuration"
-  type = object({
-    ec2_cidrs = map(list(string))
-  })
-  default = {
-    ec2_cidrs = {
-      subnet0 = ["172.16.0.10"]
-    }
-  }
-}
-
 variable "security_group" {
   description = "Security group configuration"
   type = object({
@@ -103,6 +91,7 @@ variable "ec2" {
       delete_on_termination = bool
       encrypted             = bool
     })
+    nics = map(list(string))
   })
   default = {
     instance_type = "t3.micro"
@@ -111,6 +100,9 @@ variable "ec2" {
       size                  = 30
       delete_on_termination = true
       encrypted             = true
+    }
+    nics = {
+      subnet0 = ["172.16.0.10"]
     }
   }
 }
