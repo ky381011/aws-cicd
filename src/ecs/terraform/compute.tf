@@ -1,17 +1,17 @@
-data "aws_ami" "ubuntu" {
+data "aws_ami" "selected" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+    values = [var.ec2.ami.name_filter]
   }
 
   filter {
     name   = "virtualization-type"
-    values = ["hvm"]
+    values = [var.ec2.ami.virtualization_type]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = [var.ec2.ami.owner_id]
 }
 
 resource "aws_key_pair" "ec2_key" {
@@ -20,13 +20,13 @@ resource "aws_key_pair" "ec2_key" {
 }
 
 locals {
-  nic_keys = keys(var.ec2.nics)
-  primary_nic_key = local.nic_keys[0]
+  nic_keys            = keys(var.ec2.nics)
+  primary_nic_key     = local.nic_keys[0]
   additional_nic_keys = slice(local.nic_keys, 1, length(local.nic_keys))
 }
 
 resource "aws_instance" "ec2" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = data.aws_ami.selected.id
   instance_type = var.ec2.instance_type
   key_name      = aws_key_pair.ec2_key.key_name
 

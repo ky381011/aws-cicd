@@ -85,6 +85,11 @@ variable "ec2" {
   description = "EC2 instance configuration"
   type = object({
     instance_type = string
+    ami = object({
+      name_filter         = string
+      virtualization_type = string
+      owner_id            = string
+    })
     root_volume = object({
       type                  = string
       size                  = number
@@ -95,6 +100,11 @@ variable "ec2" {
   })
   default = {
     instance_type = "t3.micro"
+    ami = {
+      name_filter         = "al2023-ami-*-x86_64"
+      virtualization_type = "hvm"
+      owner_id            = "137112412989" # Amazon
+    }
     root_volume = {
       type                  = "gp3"
       size                  = 30
