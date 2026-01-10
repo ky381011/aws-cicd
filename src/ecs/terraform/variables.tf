@@ -152,3 +152,18 @@ variable "authority" {
     }
   }
 }
+
+# ================================
+# Monitor Variables
+# ================================
+variable "cloudwatch" {
+  description = "CloudWatch dashboard configuration"
+  type = object({
+    dashboard_name = string
+    dashboard_body = string
+  })
+  default = {
+    dashboard_name = "ecs-instance-dashboard"
+    dashboard_body = ""
+  }
+}
