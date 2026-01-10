@@ -160,10 +160,29 @@ variable "cloudwatch" {
   description = "CloudWatch dashboard configuration"
   type = object({
     dashboard_name = string
-    dashboard_body = string
+    dashboard_body = object({
+      widgets = list(object({
+        type = string
+        properties = object({
+          metrics = optional(list(list(string)))
+          period  = optional(number)
+          stat    = optional(string)
+          region  = optional(string)
+          title   = optional(string)
+          yAxis = optional(object({
+            left = optional(object({
+              min = optional(number)
+              max = optional(number)
+            }))
+          }))
+        })
+      }))
+    })
   })
   default = {
     dashboard_name = "ecs-instance-dashboard"
-    dashboard_body = ""
+    dashboard_body = {
+      widgets = []
+    }
   }
 }
