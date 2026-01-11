@@ -1,0 +1,26 @@
+[
+  {
+    "type": "metric",
+    "properties": {
+      "metrics": [
+        ["AWS/EC2", "NetworkIn", "InstanceId", "${instance_id}"]
+      ],
+      "period": 300,
+      "stat": "Sum",
+      "region": "ap-northeast-1",
+      "title": "EC2 Network In"
+    }
+  },
+  {
+    "type": "metric",
+    "properties": {
+      "metrics": [
+        ["AWS/EC2", "NetworkOut", "InstanceId", "${instance_id}"]
+      ],
+      "period": 300,
+      "stat": "Sum",
+      "region": "ap-northeast-1",
+      "title": "EC2 Network Out"
+    }
+  }
+]

@@ -159,55 +159,11 @@ variable "authority" {
 variable "cloudwatch" {
   description = "CloudWatch dashboard configuration"
   type = object({
-    dashboard_name = string
-    dashboard_body = object({
-      widgets = list(object({
-        type = string
-        properties = object({
-          metrics = optional(list(list(string)))
-          period  = optional(number)
-          stat    = optional(string)
-          region  = optional(string)
-          title   = optional(string)
-          yAxis = optional(object({
-            left = optional(object({
-              min = optional(number)
-              max = optional(number)
-            }))
-          }))
-        })
-      }))
-    })
+    dashboard_name      = string
+    widgets_file        = string
   })
   default = {
     dashboard_name = "ecs-instance-dashboard"
-    dashboard_body = {
-      widgets = [
-        {
-          type = "metric"
-          properties = {
-            metrics = [
-              ["AWS/EC2", "NetworkIn", "InstanceId", "$${instance_id}"]
-            ]
-            period = 300
-            stat   = "Sum"
-            region = "ap-northeast-1"
-            title  = "EC2 Network In"
-          }
-        },
-        {
-          type = "metric"
-          properties = {
-            metrics = [
-              ["AWS/EC2", "NetworkOut", "InstanceId", "$${instance_id}"]
-            ]
-            period = 300
-            stat   = "Sum"
-            region = "ap-northeast-1"
-            title  = "EC2 Network Out"
-          }
-        }
-      ]
-    }
+    widgets_file   = "./settings/widgets.json"
   }
 }
