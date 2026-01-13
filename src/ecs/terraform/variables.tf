@@ -35,6 +35,28 @@ variable "subnet" {
   }
 }
 
+variable "route_table" {
+  description = "Route table configuration"
+  type = object({
+    name                   = string
+    destination_cidr_block = string
+  })
+  default = {
+    name                   = "public-route-table"
+    destination_cidr_block = "0.0.0.0/0"
+  }
+}
+
+variable "internet_gateway" {
+  description = "Internet Gateway configuration"
+  type = object({
+    name = string
+  })
+  default = {
+    name = "main-igw"
+  }
+}
+
 variable "security_group" {
   description = "Security group configuration"
   type = object({

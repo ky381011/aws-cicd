@@ -32,6 +32,29 @@ resource "aws_subnet" "subnets" {
 }
 
 # ================================
+# Route Table
+# ================================
+
+resource "aws_route_table" "public_rt" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = var.tags
+}
+
+resource "aws_route" "public_route" {
+  route_table_id         = aws_route_table.public_rt.id
+  destination_cidr_block = var.route_table.destination_cidr_block
+  gateway_id             = aws_internet_gateway.igw.id
+}
+
+resource "aws_route_table_association" "subnet_associations" {
+  for_each = var.subnet.cidrs
+
+  subnet_id      = aws_subnet.subnets[each.key].id
+  route_table_id = aws_route_table.public_rt.id
+}
+
+# ================================
 # Network Interface (NIC)
 # ================================
 
