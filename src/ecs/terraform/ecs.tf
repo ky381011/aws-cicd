@@ -40,3 +40,17 @@ resource "aws_ecs_task_definition" "main" {
 
   tags = var.tags
 }
+
+# ================================
+# ECS Service
+# ================================
+
+resource "aws_ecs_service" "main" {
+  name            = var.ecs.service.name
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.main.arn
+  desired_count   = var.ecs.service.desired_count
+  launch_type     = var.ecs.service.launch_type
+
+  tags = var.tags
+}

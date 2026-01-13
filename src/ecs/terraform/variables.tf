@@ -199,6 +199,11 @@ variable "ecs" {
       host_port                = number
       protocol                 = string
     })
+    service = object({
+      name          = string
+      desired_count = number
+      launch_type   = string
+    })
   })
   default = {
     cluster = {
@@ -218,6 +223,11 @@ variable "ecs" {
       container_port           = 80
       host_port                = 80
       protocol                 = "tcp"
+    }
+    service = {
+      name          = "sample-service"
+      desired_count = 1 # 1 task to stay within free tier
+      launch_type   = "EC2"
     }
   }
 }
