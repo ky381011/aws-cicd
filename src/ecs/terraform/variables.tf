@@ -176,6 +176,49 @@ variable "authority" {
 }
 
 # ================================
+# ECS Variables
+# ================================
+variable "ecs" {
+  description = "ECS cluster and task configuration"
+  type = object({
+    cluster_name       = string
+    container_insights = string
+    task_definition = object({
+      family                   = string
+      network_mode             = string
+      requires_compatibilities = list(string)
+      cpu                      = string
+      memory                   = string
+      container_name           = string
+      container_image          = string
+      container_cpu            = number
+      container_memory         = number
+      container_port           = number
+      host_port                = number
+      protocol                 = string
+    })
+  })
+  default = {
+    cluster_name       = "ecs-cluster"
+    container_insights = "disabled" # disabled to stay within free tier
+    task_definition = {
+      family                   = "sample-task"
+      network_mode             = "bridge"
+      requires_compatibilities = ["EC2"]
+      cpu                      = "256"
+      memory                   = "512"
+      container_name           = "sample-app"
+      container_image          = "nginx:latest"
+      container_cpu            = 256
+      container_memory         = 512
+      container_port           = 80
+      host_port                = 80
+      protocol                 = "tcp"
+    }
+  }
+}
+
+# ================================
 # Monitor Variables
 # ================================
 variable "cloudwatch" {
