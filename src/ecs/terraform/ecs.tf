@@ -3,11 +3,11 @@
 # ================================
 
 resource "aws_ecs_cluster" "main" {
-  name = var.ecs.cluster_name
+  name = var.ecs.cluster.name
 
   setting {
     name  = "containerInsights"
-    value = var.ecs.container_insights
+    value = var.ecs.cluster.container_insights
   }
 
   tags = var.tags

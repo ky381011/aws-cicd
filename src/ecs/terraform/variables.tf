@@ -181,8 +181,10 @@ variable "authority" {
 variable "ecs" {
   description = "ECS cluster and task configuration"
   type = object({
-    cluster_name       = string
-    container_insights = string
+    cluster = object({
+      name               = string
+      container_insights = string
+    })
     task_definition = object({
       family                   = string
       network_mode             = string
@@ -199,8 +201,10 @@ variable "ecs" {
     })
   })
   default = {
-    cluster_name       = "ecs-cluster"
-    container_insights = "disabled" # disabled to stay within free tier
+    cluster = {
+      name               = "ecs-cluster"
+      container_insights = "disabled" # disabled to stay within free tier
+    }
     task_definition = {
       family                   = "sample-task"
       network_mode             = "bridge"
