@@ -43,7 +43,10 @@ resource "aws_instance" "ec2" {
     encrypted             = var.ec2.root_volume.encrypted
   }
 
-  // user_data = ...
+  user_data = base64encode(templatefile("${path.module}/scripts/user_data.sh", {
+    cluster_name    = var.ecs.cluster.name
+    ecs_config_path = var.ec2.user_data.ecs_config_path
+  }))
 
   tags = var.tags
 }

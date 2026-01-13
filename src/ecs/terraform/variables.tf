@@ -119,13 +119,16 @@ variable "ec2" {
       encrypted             = bool
     })
     nics = map(list(string))
+    user_data = object({
+      ecs_config_path = string
+    })
   })
   default = {
     instance_type = "t3.micro"
     ami = {
-      name_filter         = "al2023-ami-*-x86_64"
+      name_filter         = "al2023-ami-ecs-hvm-*-x86_64"
       virtualization_type = "hvm"
-      owner_id            = "137112412989" # Amazon
+      owner_id            = "591542846629" # Amazon ECS-optimized AMI
     }
     root_volume = {
       type                  = "gp3"
@@ -135,6 +138,9 @@ variable "ec2" {
     }
     nics = {
       subnet0 = ["172.16.0.10"]
+    }
+    user_data = {
+      ecs_config_path = "/etc/ecs/ecs.config"
     }
   }
 }
