@@ -14,27 +14,29 @@ resource "aws_ecs_cluster" "main" {
 }
 
 # ================================
-# ECS Task Definition
+# ECS Task Definitions
 # ================================
 
-resource "aws_ecs_task_definition" "main" {
-  family                   = var.ecs.task_definition.family
-  network_mode             = var.ecs.task_definition.network_mode
-  requires_compatibilities = var.ecs.task_definition.requires_compatibilities
-  cpu                      = var.ecs.task_definition.cpu
-  memory                   = var.ecs.task_definition.memory
+resource "aws_ecs_task_definition" "tasks" {
+  for_each = var.ecs.task_definitions
+
+  family                   = each.value.family
+  network_mode             = each.value.network_mode
+  requires_compatibilities = each.value.requires_compatibilities
+  cpu                      = each.value.cpu
+  memory                   = each.value.memory
 
   container_definitions = jsonencode([{
-    name      = var.ecs.task_definition.container_name
-    image     = var.ecs.task_definition.container_image
-    cpu       = var.ecs.task_definition.container_cpu
-    memory    = var.ecs.task_definition.container_memory
+    name      = each.value.container_name
+    image     = each.value.container_image
+    cpu       = each.value.container_cpu
+    memory    = each.value.container_memory
     essential = true
 
     portMappings = [{
-      containerPort = var.ecs.task_definition.container_port
-      hostPort      = var.ecs.task_definition.host_port
-      protocol      = var.ecs.task_definition.protocol
+      containerPort = each.value.container_port
+      hostPort      = each.value.host_port
+      protocol      = each.value.protocol
     }]
   }])
 
@@ -42,15 +44,17 @@ resource "aws_ecs_task_definition" "main" {
 }
 
 # ================================
-# ECS Service
+# ECS Services
 # ================================
 
-resource "aws_ecs_service" "main" {
-  name            = var.ecs.service.name
+resource "aws_ecs_service" "services" {
+  for_each = var.ecs.services
+
+  name            = each.key
   cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.main.arn
-  desired_count   = var.ecs.service.desired_count
-  launch_type     = var.ecs.service.launch_type
+  task_definition = aws_ecs_task_definition.tasks[each.value.task_key].arn
+  desired_count   = each.value.desired_count
+  launch_type     = each.value.launch_type
 
   tags = var.tags
 }

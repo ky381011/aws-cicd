@@ -185,13 +185,13 @@ variable "authority" {
 # ECS Variables
 # ================================
 variable "ecs" {
-  description = "ECS cluster and task configuration"
+  description = "ECS cluster and services configuration"
   type = object({
     cluster = object({
       name               = string
       container_insights = string
     })
-    task_definition = object({
+    task_definitions = map(object({
       family                   = string
       network_mode             = string
       requires_compatibilities = list(string)
@@ -204,36 +204,59 @@ variable "ecs" {
       container_port           = number
       host_port                = number
       protocol                 = string
-    })
-    service = object({
-      name          = string
+    }))
+    services = map(object({
+      task_key      = string
       desired_count = number
       launch_type   = string
-    })
+    }))
   })
   default = {
     cluster = {
       name               = "ecs-cluster"
       container_insights = "disabled" # disabled to stay within free tier
     }
-    task_definition = {
-      family                   = "sample-task"
-      network_mode             = "bridge"
-      requires_compatibilities = ["EC2"]
-      cpu                      = "256"
-      memory                   = "512"
-      container_name           = "sample-app"
-      container_image          = "nginx:latest"
-      container_cpu            = 256
-      container_memory         = 512
-      container_port           = 80
-      host_port                = 80
-      protocol                 = "tcp"
+    task_definitions = {
+      nginx = {
+        family                   = "nginx-task"
+        network_mode             = "bridge"
+        requires_compatibilities = ["EC2"]
+        cpu                      = "128"
+        memory                   = "256"
+        container_name           = "nginx"
+        container_image          = "nginx:latest"
+        container_cpu            = 128
+        container_memory         = 256
+        container_port           = 80
+        host_port                = 80
+        protocol                 = "tcp"
+      }
+      react = {
+        family                   = "react-task"
+        network_mode             = "bridge"
+        requires_compatibilities = ["EC2"]
+        cpu                      = "128"
+        memory                   = "512"
+        container_name           = "react"
+        container_image          = "nginx:alpine" # placeholder
+        container_cpu            = 128
+        container_memory         = 512
+        container_port           = 3000
+        host_port                = 3000
+        protocol                 = "tcp"
+      }
     }
-    service = {
-      name          = "sample-service"
-      desired_count = 1 # 1 task to stay within free tier
-      launch_type   = "EC2"
+    services = {
+      nginx = {
+        task_key      = "nginx"
+        desired_count = 1
+        launch_type   = "EC2"
+      }
+      react = {
+        task_key      = "react"
+        desired_count = 1
+        launch_type   = "EC2"
+      }
     }
   }
 }
