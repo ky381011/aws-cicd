@@ -87,6 +87,12 @@ variable "security_group" {
         to_port     = 80
         protocol    = "tcp"
         cidr_blocks = "0.0.0.0/0"
+      },
+      {
+        from_port   = 8080
+        to_port     = 8080
+        protocol    = "tcp"
+        cidr_blocks = "0.0.0.0/0"
       }
     ]
     egress_rules = [
@@ -249,10 +255,38 @@ variable "ecs" {
           read_only      = true
         }]
       }
+      nginx-website = {
+        family                   = "nginx-website-task"
+        network_mode             = "bridge"
+        requires_compatibilities = ["EC2"]
+        cpu                      = "128"
+        memory                   = "256"
+        container_name           = "nginx-website"
+        container_image          = "nginx:latest"
+        container_cpu            = 128
+        container_memory         = 256
+        container_port           = 80
+        host_port                = 8080
+        protocol                 = "tcp"
+        volumes = [{
+          name      = "static-website"
+          host_path = "/var/www/html"
+        }]
+        mount_points = [{
+          source_volume  = "static-website"
+          container_path = "/usr/share/nginx/html"
+          read_only      = false
+        }]
+      }
     }
     services = {
       nginx = {
         task_key      = "nginx"
+        desired_count = 1
+        launch_type   = "EC2"
+      }
+      nginx-website = {
+        task_key      = "nginx-website"
         desired_count = 1
         launch_type   = "EC2"
       }
