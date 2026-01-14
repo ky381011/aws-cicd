@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - ECS Static Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+            margin-top: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>About This Website</h1>
+        <p>This is a static website deployed using ECS with volume mounts.</p>
+        
+        <h2>技術スタック</h2>
+        <ul>
+            <li>Amazon ECS (Elastic Container Service)</li>
+            <li>EC2 Launch Type</li>
+            <li>Nginx Container</li>
+            <li>Volume Mounts (ホストパス)</li>
+            <li>GitHub Repository (ソースコード管理)</li>
+        </ul>
+        
+        <h2>デプロイフロー</h2>
+        <ol>
+            <li>EC2インスタンス起動時にuser_dataが実行</li>
+            <li>GitHubリポジトリから静的ファイルをclone</li>
+            <li>ファイルを /var/www/html にコピー</li>
+            <li>Nginxコンテナがボリュームマウントでアクセス</li>
+        </ol>
+        
+        <p><a href="index.html">ホームに戻る</a></p>
+    </div>
+</body>
+</html>

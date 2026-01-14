@@ -127,6 +127,8 @@ variable "ec2" {
     nics = map(list(string))
     user_data = object({
       ecs_config_path = string
+      git_repo_url    = string
+      git_branch      = string
     })
   })
   default = {
@@ -147,6 +149,8 @@ variable "ec2" {
     }
     user_data = {
       ecs_config_path = "/etc/ecs/ecs.config"
+      git_repo_url    = "https://github.com/YOUR_USERNAME/aws-cicd.git"
+      git_branch      = "main"
     }
   }
 }

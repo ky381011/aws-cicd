@@ -34,80 +34,39 @@ EOF
 # Set permissions
 chmod 644 /etc/ecs-config/nginx/default.conf
 
+# Install git if not already installed
+if ! command -v git &> /dev/null; then
+    yum install -y git
+fi
+
 # Create directory for static website content
 mkdir -p /var/www/html
 
-# Create sample static website files
-cat > /var/www/html/index.html << 'EOF'
+# Clone repository and copy static files
+cd /tmp
+git clone -b ${git_branch} ${git_repo_url} repo-temp
+if [ -d "repo-temp/src/ecs/static" ]; then
+    cp -r repo-temp/src/ecs/static/* /var/www/html/
+    echo "Static files deployed from GitHub repository"
+else
+    echo "Static files directory not found, creating default files"
+    cat > /var/www/html/index.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ECS Static Website</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            border-bottom: 3px solid #007bff;
-            padding-bottom: 10px;
-        }
-        .info {
-            background-color: #e7f3ff;
-            padding: 15px;
-            border-left: 4px solid #007bff;
-            margin: 20px 0;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>ECS Static Website with Volume Mount</h1>
-        <p>このWebサイトはECSのボリュームマウント機能を使用してデプロイされています。</p>
-        
-        <div class="info">
-            <strong>構成情報:</strong>
-            <ul>
-                <li>Webサーバー: Nginx</li>
-                <li>ホストパス: /var/www/html</li>
-                <li>コンテナパス: /usr/share/nginx/html</li>
-                <li>ポート: 8080</li>
-            </ul>
-        </div>
-        
-        <p>このHTMLファイルはEC2インスタンスの /var/www/html に配置され、Nginxコンテナにマウントされています。</p>
-    </div>
+    <h1>ECS Static Website</h1>
+    <p>Deployed from GitHub repository</p>
 </body>
 </html>
-EOF
+HTMLEOF
+fi
 
-cat > /var/www/html/about.html << 'EOF'
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - ECS Static Website</title>
-</head>
-<body>
-    <h1>About This Website</h1>
-    <p>This is a static website deployed using ECS with volume mounts.</p>
-    <a href="index.html">Back to Home</a>
-</body>
-</html>
-EOF
+# Cleanup
+rm -rf /tmp/repo-temp
 
 # Set permissions for static website files
 chmod -R 755 /var/www/html
