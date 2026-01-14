@@ -26,6 +26,14 @@ resource "aws_ecs_task_definition" "tasks" {
   cpu                      = each.value.cpu
   memory                   = each.value.memory
 
+  dynamic "volume" {
+    for_each = each.value.volumes
+    content {
+      name      = volume.value.name
+      host_path = volume.value.host_path
+    }
+  }
+
   container_definitions = jsonencode([{
     name      = each.value.container_name
     image     = each.value.container_image
@@ -37,6 +45,12 @@ resource "aws_ecs_task_definition" "tasks" {
       containerPort = each.value.container_port
       hostPort      = each.value.host_port
       protocol      = each.value.protocol
+    }]
+
+    mountPoints = [for mp in each.value.mount_points : {
+      sourceVolume  = mp.source_volume
+      containerPath = mp.container_path
+      readOnly      = mp.read_only
     }]
   }])
 

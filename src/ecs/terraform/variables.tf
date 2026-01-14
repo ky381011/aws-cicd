@@ -204,6 +204,15 @@ variable "ecs" {
       container_port           = number
       host_port                = number
       protocol                 = string
+      volumes = list(object({
+        name      = string
+        host_path = string
+      }))
+      mount_points = list(object({
+        source_volume  = string
+        container_path = string
+        read_only      = bool
+      }))
     }))
     services = map(object({
       task_key      = string
@@ -230,30 +239,20 @@ variable "ecs" {
         container_port           = 80
         host_port                = 80
         protocol                 = "tcp"
-      }
-      react = {
-        family                   = "react-task"
-        network_mode             = "bridge"
-        requires_compatibilities = ["EC2"]
-        cpu                      = "128"
-        memory                   = "512"
-        container_name           = "react"
-        container_image          = "nginx:alpine" # placeholder
-        container_cpu            = 128
-        container_memory         = 512
-        container_port           = 3000
-        host_port                = 3000
-        protocol                 = "tcp"
+        volumes = [{
+          name      = "nginx-config"
+          host_path = "/etc/ecs-config/nginx"
+        }]
+        mount_points = [{
+          source_volume  = "nginx-config"
+          container_path = "/etc/nginx/conf.d"
+          read_only      = true
+        }]
       }
     }
     services = {
       nginx = {
         task_key      = "nginx"
-        desired_count = 1
-        launch_type   = "EC2"
-      }
-      react = {
-        task_key      = "react"
         desired_count = 1
         launch_type   = "EC2"
       }
