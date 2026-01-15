@@ -236,7 +236,7 @@ variable "ecs" {
       container_insights = "disabled" # disabled to stay within free tier
     }
     task_definitions = {
-      nginx = {
+      proxy = {
         family                   = "nginx-task"
         network_mode             = "bridge"
         requires_compatibilities = ["EC2"]
@@ -259,7 +259,7 @@ variable "ecs" {
           read_only      = true
         }]
       }
-      nginx-website = {
+      web = {
         family                   = "nginx-website-task"
         network_mode             = "bridge"
         requires_compatibilities = ["EC2"]
@@ -284,13 +284,13 @@ variable "ecs" {
       }
     }
     services = {
-      nginx = {
-        task_key      = "nginx"
+      proxy = {
+        task_key      = "proxy"
         desired_count = 1
         launch_type   = "EC2"
       }
-      nginx-website = {
-        task_key      = "nginx-website"
+      web = {
+        task_key      = "web"
         desired_count = 1
         launch_type   = "EC2"
       }
