@@ -78,7 +78,10 @@ jobs:
 
       - name: Terraform Apply
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply \
+              -var="ec2.user_data.git_repo_url=${{ github.server_url }}/${{ github.repository }}.git" \
+              -var="ec2.user_data.git_branch=${{ github.ref_name }}" \
+              -auto-approve tfplan
 
       - name: Upload state file
         uses: ./.github/actions/_tfstate_push_module/
