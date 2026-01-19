@@ -73,6 +73,7 @@ jobs:
         run: terraform init -reconfigure
 
       - name: Terraform Plan
+        if: github.event.inputs.OPERATE == 'apply'
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: terraform plan \
               -var="ec2.user_data.git_repo_url=${{ github.server_url }}/${{ github.repository }}.git" \
@@ -80,11 +81,17 @@ jobs:
               -out=tfplan
 
       - name: Terraform Apply
+        if: github.event.inputs.OPERATE == 'apply'
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: terraform apply \
               -var="ec2.user_data.git_repo_url=${{ github.server_url }}/${{ github.repository }}.git" \
               -var="ec2.user_data.git_branch=${{ github.ref_name }}" \
               -auto-approve tfplan
+      
+      - name: Terraform Destroy
+        if: github.event.inputs.OPERATE == 'destroy'
+        working-directory: ${{ env.TERRAFORM_WORK_DIR }}
+        run: terraform destroy -auto-approve
 
       - name: Upload state file
         uses: ./.github/actions/_tfstate_push_module/
