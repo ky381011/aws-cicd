@@ -173,17 +173,17 @@ variable "ec2_user_data_git_branch" {
 # ================================
 # SSH Key Variables
 # ================================
-variable "ssh_key" {
-  description = "SSH key pair configuration"
-  type = object({
-    name       = string
-    public_key = string
-  })
-  default = {
-    name       = "ec2-key"
-    public_key = ""
-  }
-  sensitive = true
+variable "ssh_key_name" {
+  description = "SSH key pair name"
+  type        = string
+  default     = "ec2-key"
+}
+
+variable "ssh_key_public_key" {
+  description = "SSH public key"
+  type        = string
+  default     = ""
+  sensitive   = true
 }
 
 # ================================

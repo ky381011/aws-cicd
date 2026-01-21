@@ -79,6 +79,7 @@ jobs:
           terraform plan \
             -var="ec2_user_data_git_repo_url=${{ github.server_url }}/${{ github.repository }}.git" \
             -var="ec2_user_data_git_branch=${{ github.ref_name }}" \
+            -var="ssh_key_public_key=${{ secrets.AWS_CICD_SSH_PUBLIC_KEY }}" \
             -out=tfplan
 
       - name: Terraform Apply

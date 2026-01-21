@@ -15,8 +15,8 @@ data "aws_ami" "selected" {
 }
 
 resource "aws_key_pair" "ec2_key" {
-  key_name   = var.ssh_key.name
-  public_key = var.ssh_key.public_key
+  key_name   = var.ssh_key_name
+  public_key = var.ssh_key_public_key
 }
 
 locals {
