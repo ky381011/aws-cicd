@@ -76,8 +76,6 @@ jobs:
         if: github.event.inputs.OPERATE == 'apply'
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: terraform plan \
-              -var="ec2.user_data.git_repo_url=${{ github.server_url }}/${{ github.repository }}.git" \
-              -var="ec2.user_data.git_branch=${{ github.ref_name }}" \
               -out=tfplan
 
       - name: Terraform Apply
