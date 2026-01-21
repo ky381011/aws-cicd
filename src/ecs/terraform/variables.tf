@@ -155,6 +155,21 @@ variable "ec2" {
   }
 }
 
+# --------------------------------
+# User Data Override Variables
+# --------------------------------
+variable "ec2_user_data_git_repo_url" {
+  description = "Git repository URL for user data script"
+  type        = string
+  default     = ""
+}
+
+variable "ec2_user_data_git_branch" {
+  description = "Git branch for user data script"
+  type        = string
+  default     = ""
+}
+
 # ================================
 # SSH Key Variables
 # ================================

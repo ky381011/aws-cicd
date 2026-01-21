@@ -82,8 +82,8 @@ jobs:
         working-directory: ${{ env.TERRAFORM_WORK_DIR }}
         run: |
           terraform apply \
-            -var="ec2.user_data.git_repo_url=${{ github.server_url }}/${{ github.repository }}.git" \
-            -var="ec2.user_data.git_branch=${{ github.ref_name }}" \
+            -var="ec2_user_data_git_repo_url=${{ github.server_url }}/${{ github.repository }}.git" \
+            -var="ec2_user_data_git_branch=${{ github.ref_name }}" \
             -auto-approve tfplan
       
       - name: Terraform Destroy

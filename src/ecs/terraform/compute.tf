@@ -46,8 +46,8 @@ resource "aws_instance" "ec2" {
   user_data = base64encode(templatefile("${path.module}/scripts/user_data.sh", {
     cluster_name    = var.ecs.cluster.name
     ecs_config_path = var.ec2.user_data.ecs_config_path
-    git_repo_url    = var.ec2.user_data.git_repo_url
-    git_branch      = var.ec2.user_data.git_branch
+    git_repo_url    = var.ec2_user_data_git_repo_url != "" ? var.ec2_user_data_git_repo_url : var.ec2.user_data.git_repo_url
+    git_branch      = var.ec2_user_data_git_branch != "" ? var.ec2_user_data_git_branch : var.ec2.user_data.git_branch
   }))
 
   tags = var.tags
